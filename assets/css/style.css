@@ -1,0 +1,7 @@
+/* Site-wide tweaks on top of Tailwind. */
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+table { border-collapse: collapse; }
+.standings-row:nth-child(odd) td { background-color: #f9fafb; }
+.standings-row:hover td { background-color: #ecfdf5; }
+.player-card { transition: transform 0.15s ease; }
+.player-card:hover { transform: translateY(-2px); }

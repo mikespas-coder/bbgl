@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teams | Bogey's and Beers Golf League</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="bg-stone-50 text-stone-900">
+  <header id="app-header"></header>
+  <main id="app-main" class="max-w-5xl mx-auto px-4 py-8">
+    <p class="text-stone-500">Loading teams&hellip;</p>
+  </main>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/scoring.js"></script>
+  <script>
+    (async function () {
+      try {
+        await DataStore.loadAll();
+        UI.renderHeader('teams.html');
+
+        const main = document.getElementById('app-main');
+        main.innerHTML = `
+          <h2 class="text-2xl font-bold text-stone-800 mb-1">Teams</h2>
+          <p class="text-stone-500 text-sm mb-6">${DataStore.teams.length} teams competing this season.</p>
+          <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            ${DataStore.teams.map(team => `
+              <div class="player-card bg-white rounded-lg shadow-sm border border-stone-200 p-5">
+                <h3 class="text-lg font-bold text-emerald-800">${team.name}</h3>
+                ${team.tagline ? `<p class="text-xs text-stone-500 mb-3">${team.tagline}</p>` : '<div class="mb-3"></div>'}
+                <ul class="space-y-2">
+                  ${team.players.map(p => `
+                    <li class="flex justify-between items-center">
+                      <span class="text-stone-800">
+                        ${p.nickname && p.nickname !== p.name ? `<span class="font-semibold">${p.nickname}</span> <span class="text-stone-500 text-xs">(${p.name})</span>` : p.name}
+                      </span>
+                      <span class="text-xs text-stone-500 bg-stone-100 px-2 py-1 rounded">HCP ${p.handicap}</span>
+                    </li>
+                  `).join('')}
+                </ul>
+              </div>
+            `).join('')}
+          </div>
+        `;
+      } catch (e) {
+        console.error(e);
+        UI.showError('Failed to load teams: ' + e.message);
+      }
+    })();
+  </script>
+</body>
+</html>

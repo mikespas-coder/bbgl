@@ -1,0 +1,12 @@
+{
+  "name": "Bogey's and Beers Golf League",
+  "shortName": "BBGL",
+  "tagline": "5th Season",
+  "course": "Audubon Golf Course",
+  "location": "Buffalo, NY",
+  "season": "2026",
+  "commissioner": "Brian Burkhardt",
+  "coCommissioner": "Fred K. Heinle",
+  "format": "2-man teams, handicap-based. Each match is worth 5 points: 1 point for match play and 1 point for stroke play in each individual pairing (2 pairings = 4 points), plus 1 point for the lower combined team net score.",
+  "holesPerWeek": 9
+}

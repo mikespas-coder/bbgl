@@ -1,0 +1,313 @@
+{
+  "_note": "Auto-generated double round-robin for 8 teams, Friday nights starting 5/8/2026, skipping 7/3 for the holiday weekend. Brian: edit dates/matchups freely.",
+  "schedule": [
+    {
+      "week": 1,
+      "date": "2026-05-08",
+      "matches": [
+        {
+          "teamA": "golfin-guidos",
+          "teamB": "wagner-jamie"
+        },
+        {
+          "teamA": "tokin-strokin",
+          "teamB": "drew-buddy"
+        },
+        {
+          "teamA": "polish-princesses",
+          "teamB": "big-fred-jack"
+        },
+        {
+          "teamA": "squatch-setup",
+          "teamB": "throuple"
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "date": "2026-05-15",
+      "matches": [
+        {
+          "teamA": "golfin-guidos",
+          "teamB": "drew-buddy"
+        },
+        {
+          "teamA": "wagner-jamie",
+          "teamB": "big-fred-jack"
+        },
+        {
+          "teamA": "tokin-strokin",
+          "teamB": "throuple"
+        },
+        {
+          "teamA": "polish-princesses",
+          "teamB": "squatch-setup"
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "date": "2026-05-22",
+      "matches": [
+        {
+          "teamA": "golfin-guidos",
+          "teamB": "big-fred-jack"
+        },
+        {
+          "teamA": "drew-buddy",
+          "teamB": "throuple"
+        },
+        {
+          "teamA": "wagner-jamie",
+          "teamB": "squatch-setup"
+        },
+        {
+          "teamA": "tokin-strokin",
+          "teamB": "polish-princesses"
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "date": "2026-05-29",
+      "matches": [
+        {
+          "teamA": "golfin-guidos",
+          "teamB": "throuple"
+        },
+        {
+          "teamA": "big-fred-jack",
+          "teamB": "squatch-setup"
+        },
+        {
+          "teamA": "drew-buddy",
+          "teamB": "polish-princesses"
+        },
+        {
+          "teamA": "wagner-jamie",
+          "teamB": "tokin-strokin"
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "date": "2026-06-05",
+      "matches": [
+        {
+          "teamA": "golfin-guidos",
+          "teamB": "squatch-setup"
+        },
+        {
+          "teamA": "throuple",
+          "teamB": "polish-princesses"
+        },
+        {
+          "teamA": "big-fred-jack",
+          "teamB": "tokin-strokin"
+        },
+        {
+          "teamA": "drew-buddy",
+          "teamB": "wagner-jamie"
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "date": "2026-06-12",
+      "matches": [
+        {
+          "teamA": "golfin-guidos",
+          "teamB": "polish-princesses"
+        },
+        {
+          "teamA": "squatch-setup",
+          "teamB": "tokin-strokin"
+        },
+        {
+          "teamA": "throuple",
+          "teamB": "wagner-jamie"
+        },
+        {
+          "teamA": "big-fred-jack",
+          "teamB": "drew-buddy"
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "date": "2026-06-19",
+      "matches": [
+        {
+          "teamA": "golfin-guidos",
+          "teamB": "tokin-strokin"
+        },
+        {
+          "teamA": "polish-princesses",
+          "teamB": "wagner-jamie"
+        },
+        {
+          "teamA": "squatch-setup",
+          "teamB": "drew-buddy"
+        },
+        {
+          "teamA": "throuple",
+          "teamB": "big-fred-jack"
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "date": "2026-06-26",
+      "matches": [
+        {
+          "teamA": "wagner-jamie",
+          "teamB": "golfin-guidos"
+        },
+        {
+          "teamA": "drew-buddy",
+          "teamB": "tokin-strokin"
+        },
+        {
+          "teamA": "big-fred-jack",
+          "teamB": "polish-princesses"
+        },
+        {
+          "teamA": "throuple",
+          "teamB": "squatch-setup"
+        }
+      ]
+    },
+    {
+      "week": 9,
+      "date": "2026-07-10",
+      "matches": [
+        {
+          "teamA": "drew-buddy",
+          "teamB": "golfin-guidos"
+        },
+        {
+          "teamA": "big-fred-jack",
+          "teamB": "wagner-jamie"
+        },
+        {
+          "teamA": "throuple",
+          "teamB": "tokin-strokin"
+        },
+        {
+          "teamA": "squatch-setup",
+          "teamB": "polish-princesses"
+        }
+      ]
+    },
+    {
+      "week": 10,
+      "date": "2026-07-17",
+      "matches": [
+        {
+          "teamA": "big-fred-jack",
+          "teamB": "golfin-guidos"
+        },
+        {
+          "teamA": "throuple",
+          "teamB": "drew-buddy"
+        },
+        {
+          "teamA": "squatch-setup",
+          "teamB": "wagner-jamie"
+        },
+        {
+          "teamA": "polish-princesses",
+          "teamB": "tokin-strokin"
+        }
+      ]
+    },
+    {
+      "week": 11,
+      "date": "2026-07-24",
+      "matches": [
+        {
+          "teamA": "throuple",
+          "teamB": "golfin-guidos"
+        },
+        {
+          "teamA": "squatch-setup",
+          "teamB": "big-fred-jack"
+        },
+        {
+          "teamA": "polish-princesses",
+          "teamB": "drew-buddy"
+        },
+        {
+          "teamA": "tokin-strokin",
+          "teamB": "wagner-jamie"
+        }
+      ]
+    },
+    {
+      "week": 12,
+      "date": "2026-07-31",
+      "matches": [
+        {
+          "teamA": "squatch-setup",
+          "teamB": "golfin-guidos"
+        },
+        {
+          "teamA": "polish-princesses",
+          "teamB": "throuple"
+        },
+        {
+          "teamA": "tokin-strokin",
+          "teamB": "big-fred-jack"
+        },
+        {
+          "teamA": "wagner-jamie",
+          "teamB": "drew-buddy"
+        }
+      ]
+    },
+    {
+      "week": 13,
+      "date": "2026-08-07",
+      "matches": [
+        {
+          "teamA": "polish-princesses",
+          "teamB": "golfin-guidos"
+        },
+        {
+          "teamA": "tokin-strokin",
+          "teamB": "squatch-setup"
+        },
+        {
+          "teamA": "wagner-jamie",
+          "teamB": "throuple"
+        },
+        {
+          "teamA": "drew-buddy",
+          "teamB": "big-fred-jack"
+        }
+      ]
+    },
+    {
+      "week": 14,
+      "date": "2026-08-14",
+      "matches": [
+        {
+          "teamA": "tokin-strokin",
+          "teamB": "golfin-guidos"
+        },
+        {
+          "teamA": "wagner-jamie",
+          "teamB": "polish-princesses"
+        },
+        {
+          "teamA": "drew-buddy",
+          "teamB": "squatch-setup"
+        },
+        {
+          "teamA": "big-fred-jack",
+          "teamB": "throuple"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recaps | Bogey's and Beers Golf League</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="bg-stone-50 text-stone-900">
+  <header id="app-header"></header>
+  <main id="app-main" class="max-w-5xl mx-auto px-4 py-8">
+    <p class="text-stone-500">Loading recaps&hellip;</p>
+  </main>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/scoring.js"></script>
+  <script>
+    (async function () {
+      try {
+        await DataStore.loadAll();
+        UI.renderHeader('recaps.html');
+
+        const main = document.getElementById('app-main');
+        const recaps = Object.values(DataStore.recapsByWeek).sort((a,b) => b.week - a.week);
+
+        if (recaps.length === 0) {
+          main.innerHTML = `
+            <h2 class="text-2xl font-bold text-stone-800 mb-2">Recaps</h2>
+            <p class="text-stone-500">Weekly recaps will appear here as the season unfolds.</p>
+          `;
+          return;
+        }
+
+        main.innerHTML = `
+          <h2 class="text-2xl font-bold text-stone-800 mb-6">Weekly Recaps</h2>
+          <div class="space-y-8">
+            ${recaps.map(r => `
+              <article class="bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
+                <div class="bg-emerald-700 text-white px-5 py-3">
+                  <div class="text-xs uppercase tracking-wider text-emerald-200">Week ${r.week} &middot; ${UI.formatDate(r.date)}</div>
+                  <h3 class="text-xl font-bold">${r.title}</h3>
+                </div>
+                <div class="p-5">
+                  <p class="text-stone-700 leading-relaxed whitespace-pre-line">${r.body}</p>
+                  ${(r.photos && r.photos.length > 0) ? `
+                    <div class="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                      ${r.photos.map(src => `
+                        <img src="photos/${src}" alt="" class="w-full h-32 object-cover rounded" />
+                      `).join('')}
+                    </div>
+                  ` : ''}
+                </div>
+              </article>
+            `).join('')}
+          </div>
+        `;
+      } catch (e) {
+        console.error(e);
+        UI.showError('Failed to load recaps: ' + e.message);
+      }
+    })();
+  </script>
+</body>
+</html>

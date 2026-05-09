@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaderboard | Bogey's and Beers Golf League</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/css/style.css" />
+</head>
+<body class="bg-stone-50 text-stone-900">
+  <header id="app-header"></header>
+  <main id="app-main" class="max-w-5xl mx-auto px-4 py-8">
+    <p class="text-stone-500">Loading league data&hellip;</p>
+  </main>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/ui.js"></script>
+  <script src="assets/js/scoring.js"></script>
+  <script>
+    (async function () {
+      try {
+        await DataStore.loadAll();
+        UI.renderHeader('index.html');
+
+        const { standings, weeks } = Scoring.computeSeason(DataStore.teams, DataStore.scoresByWeek);
+        const weeksPlayed = Object.keys(weeks).length;
+        const lastWeek = weeksPlayed > 0 ? Math.max(...Object.keys(weeks).map(Number)) : null;
+
+        const main = document.getElementById('app-main');
+        main.innerHTML = `
+          <section class="mb-8">
+            <h2 class="text-2xl font-bold text-stone-800 mb-1">Season Standings</h2>
+            <p class="text-stone-500 text-sm mb-4">
+              ${weeksPlayed} ${weeksPlayed === 1 ? 'week' : 'weeks'} played &middot; 5 points per match
+            </p>
+            <div class="overflow-x-auto bg-white rounded-lg shadow-sm border border-stone-200">
+              <table class="w-full">
+                <thead class="bg-stone-100 text-stone-600 text-sm">
+                  <tr>
+                    <th class="text-left px-4 py-3 w-12">#</th>
+                    <th class="text-left px-4 py-3">Team</th>
+                    <th class="text-left px-4 py-3">Players</th>
+                    <th class="text-right px-4 py-3">W&ndash;L&ndash;H</th>
+                    <th class="text-right px-4 py-3 font-bold">Points</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${standings.map((s, i) => {
+                    const team = DataStore.teamById(s.teamId);
+                    const players = team.players.map(p => p.name).join(', ');
+                    const isLeader = i === 0 && s.points > 0;
+                    return `
+                      <tr class="standings-row border-t border-stone-100">
+                        <td class="px-4 py-3 ${isLeader ? 'text-emerald-700 font-bold' : 'text-stone-500'}">${i + 1}</td>
+                        <td class="px-4 py-3 font-semibold ${isLeader ? 'text-emerald-700' : ''}">${team.name}</td>
+                        <td class="px-4 py-3 text-stone-600 text-sm">${players}</td>
+                        <td class="px-4 py-3 text-right text-stone-600">${s.wins}&ndash;${s.losses}&ndash;${s.halves}</td>
+                        <td class="px-4 py-3 text-right text-lg font-bold ${isLeader ? 'text-emerald-700' : 'text-stone-800'}">${UI.formatPoints(s.points)}</td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          ${lastWeek ? `
+            <section class="mb-8">
+              <h2 class="text-2xl font-bold text-stone-800 mb-1">Week ${lastWeek} Results</h2>
+              <p class="text-stone-500 text-sm mb-4">${UI.formatDate(weeks[lastWeek].date)}</p>
+              <div class="grid gap-4 sm:grid-cols-2">
+                ${weeks[lastWeek].matches.map(m => {
+                  const tA = DataStore.teamById(m.teamA);
+                  const tB = DataStore.teamById(m.teamB);
+                  const aWin = m.pointsA > m.pointsB;
+                  const bWin = m.pointsB > m.pointsA;
+                  return `
+                    <div class="bg-white rounded-lg shadow-sm border border-stone-200 p-4">
+                      <div class="flex items-center justify-between">
+                        <div class="${aWin ? 'font-bold text-emerald-700' : 'text-stone-700'}">${tA.name}</div>
+                        <div class="text-xl font-bold">${UI.formatPoints(m.pointsA)}</div>
+                      </div>
+                      <div class="border-t border-stone-100 my-2"></div>
+                      <div class="flex items-center justify-between">
+                        <div class="${bWin ? 'font-bold text-emerald-700' : 'text-stone-700'}">${tB.name}</div>
+                        <div class="text-xl font-bold">${UI.formatPoints(m.pointsB)}</div>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </section>
+          ` : `
+            <section class="bg-amber-50 border border-amber-200 rounded-lg p-6 text-amber-900">
+              <p class="font-semibold mb-1">No scores entered yet.</p>
+              <p class="text-sm">Brian: head over to the Score Entry page to log this week's results.</p>
+            </section>
+          `}
+        `;
+      } catch (e) {
+        console.error(e);
+        UI.showError('Failed to load league data: ' + e.message);
+      }
+    })();
+  </script>
+</body>
+</html>

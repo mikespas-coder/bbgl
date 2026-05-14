@@ -37,6 +37,7 @@
                     <div>
                       <span class="font-bold text-stone-800">Week ${wk.week}</span>
                       <span class="text-stone-500 ml-3 text-sm">${UI.formatDate(wk.date)}</span>
+                      <span class="text-stone-400 ml-2 text-xs uppercase tracking-wide">${wk.nine === 'back' ? 'Back 9' : 'Front 9'}</span>
                     </div>
                     <span class="text-xs px-2 py-1 rounded ${played ? 'bg-stone-300 text-stone-700' : upcoming ? 'bg-emerald-600 text-white' : 'bg-stone-200 text-stone-600'}">
                       ${played ? 'Final' : upcoming ? 'Upcoming' : 'Scheduled'}

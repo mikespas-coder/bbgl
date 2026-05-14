@@ -22,40 +22,78 @@
         await DataStore.loadAll();
         UI.renderHeader('index.html');
 
-        const { standings, weeks } = Scoring.computeSeason(DataStore.teams, DataStore.scoresByWeek);
+        const { playerStandings, teamStandings, weeks } = Scoring.computeSeason(
+          DataStore.teams, DataStore.scoresByWeek, DataStore.scorecard
+        );
         const weeksPlayed = Object.keys(weeks).length;
         const lastWeek = weeksPlayed > 0 ? Math.max(...Object.keys(weeks).map(Number)) : null;
 
         const main = document.getElementById('app-main');
         main.innerHTML = `
           <section class="mb-8">
-            <h2 class="text-2xl font-bold text-stone-800 mb-1">Season Standings</h2>
+            <h2 class="text-2xl font-bold text-stone-800 mb-1">Individual Standings</h2>
             <p class="text-stone-500 text-sm mb-4">
-              ${weeksPlayed} ${weeksPlayed === 1 ? 'week' : 'weeks'} played &middot; 5 points per match
+              ${weeksPlayed} ${weeksPlayed === 1 ? 'week' : 'weeks'} played &middot; hole points + show-up bonus + team-point share
             </p>
             <div class="overflow-x-auto bg-white rounded-lg shadow-sm border border-stone-200">
-              <table class="w-full">
-                <thead class="bg-stone-100 text-stone-600 text-sm">
+              <table class="w-full text-sm">
+                <thead class="bg-stone-100 text-stone-600">
                   <tr>
-                    <th class="text-left px-4 py-3 w-12">#</th>
-                    <th class="text-left px-4 py-3">Team</th>
-                    <th class="text-left px-4 py-3">Players</th>
-                    <th class="text-right px-4 py-3">W&ndash;L&ndash;H</th>
-                    <th class="text-right px-4 py-3 font-bold">Points</th>
+                    <th class="text-left px-3 py-2 w-10">#</th>
+                    <th class="text-left px-3 py-2">Player</th>
+                    <th class="text-left px-3 py-2">Team</th>
+                    <th class="text-right px-3 py-2">Wks</th>
+                    <th class="text-right px-3 py-2">Hole</th>
+                    <th class="text-right px-3 py-2">Bonus</th>
+                    <th class="text-right px-3 py-2">Team</th>
+                    <th class="text-right px-3 py-2 font-bold">Total</th>
                   </tr>
                 </thead>
                 <tbody>
-                  ${standings.map((s, i) => {
-                    const team = DataStore.teamById(s.teamId);
-                    const players = team.players.map(p => p.name).join(', ');
-                    const isLeader = i === 0 && s.points > 0;
+                  ${playerStandings.map((p, i) => {
+                    const lead = i === 0 && p.totalPoints > 0;
                     return `
-                      <tr class="standings-row border-t border-stone-100">
-                        <td class="px-4 py-3 ${isLeader ? 'text-emerald-700 font-bold' : 'text-stone-500'}">${i + 1}</td>
-                        <td class="px-4 py-3 font-semibold ${isLeader ? 'text-emerald-700' : ''}">${team.name}</td>
-                        <td class="px-4 py-3 text-stone-600 text-sm">${players}</td>
-                        <td class="px-4 py-3 text-right text-stone-600">${s.wins}&ndash;${s.losses}&ndash;${s.halves}</td>
-                        <td class="px-4 py-3 text-right text-lg font-bold ${isLeader ? 'text-emerald-700' : 'text-stone-800'}">${UI.formatPoints(s.points)}</td>
+                      <tr class="border-t border-stone-100">
+                        <td class="px-3 py-2 ${lead ? 'text-emerald-700 font-bold' : 'text-stone-500'}">${i + 1}</td>
+                        <td class="px-3 py-2 ${lead ? 'font-bold text-emerald-700' : 'font-semibold'}">${p.name}${p.isSub ? ' <span class="text-xs text-stone-400">(sub)</span>' : ''}</td>
+                        <td class="px-3 py-2 text-stone-600 text-xs">${p.teamName}</td>
+                        <td class="px-3 py-2 text-right text-stone-600">${p.weeksPlayed}</td>
+                        <td class="px-3 py-2 text-right text-stone-600">${UI.formatPoints(p.holePoints)}</td>
+                        <td class="px-3 py-2 text-right text-stone-600">${UI.formatPoints(p.showupBonus)}</td>
+                        <td class="px-3 py-2 text-right text-stone-600">${UI.formatPoints(p.teamPointsShare)}</td>
+                        <td class="px-3 py-2 text-right font-bold ${lead ? 'text-emerald-700' : 'text-stone-800'}">${UI.formatPoints(p.totalPoints)}</td>
+                      </tr>
+                    `;
+                  }).join('')}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-bold text-stone-800 mb-1">Team Standings</h2>
+            <p class="text-stone-500 text-sm mb-4">3 team points per week &middot; playoff seeding based on team totals</p>
+            <div class="overflow-x-auto bg-white rounded-lg shadow-sm border border-stone-200">
+              <table class="w-full text-sm">
+                <thead class="bg-stone-100 text-stone-600">
+                  <tr>
+                    <th class="text-left px-3 py-2 w-10">#</th>
+                    <th class="text-left px-3 py-2">Team</th>
+                    <th class="text-right px-3 py-2">Played</th>
+                    <th class="text-right px-3 py-2">W&ndash;L&ndash;T</th>
+                    <th class="text-right px-3 py-2 font-bold">Team Pts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${teamStandings.map((t, i) => {
+                    const lead = i === 0 && t.teamPoints > 0;
+                    return `
+                      <tr class="border-t border-stone-100">
+                        <td class="px-3 py-2 ${lead ? 'text-emerald-700 font-bold' : 'text-stone-500'}">${i + 1}</td>
+                        <td class="px-3 py-2 ${lead ? 'font-bold text-emerald-700' : 'font-semibold'}">${t.teamName}</td>
+                        <td class="px-3 py-2 text-right text-stone-600">${t.matchesPlayed}</td>
+                        <td class="px-3 py-2 text-right text-stone-600">${t.wins}&ndash;${t.losses}&ndash;${t.ties}</td>
+                        <td class="px-3 py-2 text-right font-bold ${lead ? 'text-emerald-700' : 'text-stone-800'}">${UI.formatPoints(t.teamPoints)}</td>
                       </tr>
                     `;
                   }).join('')}
@@ -67,23 +105,29 @@
           ${lastWeek ? `
             <section class="mb-8">
               <h2 class="text-2xl font-bold text-stone-800 mb-1">Week ${lastWeek} Results</h2>
-              <p class="text-stone-500 text-sm mb-4">${UI.formatDate(weeks[lastWeek].date)}</p>
+              <p class="text-stone-500 text-sm mb-4">${UI.formatDate(weeks[lastWeek].date)} &middot; ${weeks[lastWeek].nine === 'back' ? 'Back 9' : 'Front 9'}</p>
               <div class="grid gap-4 sm:grid-cols-2">
                 ${weeks[lastWeek].matches.map(m => {
                   const tA = DataStore.teamById(m.teamA);
                   const tB = DataStore.teamById(m.teamB);
-                  const aWin = m.pointsA > m.pointsB;
-                  const bWin = m.pointsB > m.pointsA;
+                  const aWin = m.teamAPoints > m.teamBPoints;
+                  const bWin = m.teamBPoints > m.teamAPoints;
                   return `
                     <div class="bg-white rounded-lg shadow-sm border border-stone-200 p-4">
                       <div class="flex items-center justify-between">
                         <div class="${aWin ? 'font-bold text-emerald-700' : 'text-stone-700'}">${tA.name}</div>
-                        <div class="text-xl font-bold">${UI.formatPoints(m.pointsA)}</div>
+                        <div class="text-right">
+                          <div class="text-xs text-stone-500">${UI.formatPoints(m.teamATotal)} ind</div>
+                          <div class="text-xl font-bold">${UI.formatPoints(m.teamAPoints)}</div>
+                        </div>
                       </div>
                       <div class="border-t border-stone-100 my-2"></div>
                       <div class="flex items-center justify-between">
                         <div class="${bWin ? 'font-bold text-emerald-700' : 'text-stone-700'}">${tB.name}</div>
-                        <div class="text-xl font-bold">${UI.formatPoints(m.pointsB)}</div>
+                        <div class="text-right">
+                          <div class="text-xs text-stone-500">${UI.formatPoints(m.teamBTotal)} ind</div>
+                          <div class="text-xl font-bold">${UI.formatPoints(m.teamBPoints)}</div>
+                        </div>
                       </div>
                     </div>
                   `;
@@ -93,7 +137,7 @@
           ` : `
             <section class="bg-amber-50 border border-amber-200 rounded-lg p-6 text-amber-900">
               <p class="font-semibold mb-1">No scores entered yet.</p>
-              <p class="text-sm">Brian: head over to the Score Entry page to log this week's results.</p>
+              <p class="text-sm">Season starts Friday May 22. Head to <a class="underline" href="score-entry.html">Score Entry</a> after the first round to log results.</p>
             </section>
           `}
         `;

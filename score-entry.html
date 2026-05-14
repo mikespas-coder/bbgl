@@ -6,10 +6,16 @@
   <title>Score Entry | Bogey's and Beers Golf League</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="assets/css/style.css" />
+  <style>
+    .hole-input { width: 3.25rem; }
+    .hole-input::-webkit-outer-spin-button,
+    .hole-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+    .hole-input { -moz-appearance: textfield; }
+  </style>
 </head>
 <body class="bg-stone-50 text-stone-900">
   <header id="app-header"></header>
-  <main id="app-main" class="max-w-5xl mx-auto px-4 py-8">
+  <main id="app-main" class="max-w-6xl mx-auto px-4 py-6">
     <p class="text-stone-500">Loading&hellip;</p>
   </main>
 
@@ -17,10 +23,6 @@
   <script src="assets/js/ui.js"></script>
   <script src="assets/js/scoring.js"></script>
   <script>
-    function playerLabel(p) {
-      return p.nickname && p.nickname !== p.name ? `${p.nickname} (${p.name})` : p.name;
-    }
-
     (async function () {
       try {
         await DataStore.loadAll();
@@ -29,39 +31,49 @@
         const main = document.getElementById('app-main');
         main.innerHTML = `
           <h2 class="text-2xl font-bold text-stone-800 mb-1">Score Entry</h2>
-          <p class="text-stone-600 text-sm mb-6">
-            Pick a week, set each team's lineup, enter scores, and copy the generated JSON into <code class="bg-stone-100 px-1">data/scores/week-N.json</code>.
-            The site recomputes the leaderboard automatically once that file is committed.
+          <p class="text-stone-600 text-sm mb-5">
+            Pick a week, enter each player's 9-hole gross scores, hit Generate, then copy the JSON into
+            <code class="bg-stone-100 px-1">data/scores/week-N.json</code>, add that week number to
+            <code class="bg-stone-100 px-1">data/manifest.json</code>, and push.
           </p>
 
-          <div class="bg-white rounded-lg shadow-sm border border-stone-200 p-5 mb-6">
-            <label class="block text-sm font-semibold text-stone-700 mb-2">Week</label>
-            <select id="weekPicker" class="w-full sm:w-80 border border-stone-300 rounded px-3 py-2">
-              ${DataStore.schedule.map(wk =>
-                `<option value="${wk.week}">Week ${wk.week} &mdash; ${UI.formatDate(wk.date)}</option>`
-              ).join('')}
-            </select>
+          <div class="bg-white rounded-lg shadow-sm border border-stone-200 p-4 mb-5 flex flex-col sm:flex-row sm:items-end gap-3">
+            <div class="flex-1">
+              <label class="block text-sm font-semibold text-stone-700 mb-1">Week</label>
+              <select id="weekPicker" class="w-full border border-stone-300 rounded px-3 py-2">
+                ${DataStore.schedule.map(wk =>
+                  `<option value="${wk.week}">Week ${wk.week} &mdash; ${UI.formatDate(wk.date)} &mdash; ${wk.nine === 'back' ? 'Back 9' : 'Front 9'}</option>`
+                ).join('')}
+              </select>
+            </div>
+            <div class="flex-1">
+              <label class="block text-sm font-semibold text-stone-700 mb-1">Nine played (override)</label>
+              <select id="ninePicker" class="w-full border border-stone-300 rounded px-3 py-2">
+                <option value="front">Front 9</option>
+                <option value="back">Back 9</option>
+              </select>
+            </div>
           </div>
 
           <div id="matchesArea" class="space-y-4 mb-6"></div>
 
           <div class="flex flex-wrap gap-3 mb-6">
-            <button id="generateBtn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded">Generate JSON</button>
-            <button id="copyBtn" class="bg-stone-200 hover:bg-stone-300 text-stone-800 font-semibold px-4 py-2 rounded hidden">Copy to Clipboard</button>
+            <button id="generateBtn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded">Generate JSON &amp; Preview</button>
+            <button id="copyBtn" class="bg-stone-200 hover:bg-stone-300 text-stone-800 font-semibold px-4 py-2 rounded hidden">Copy JSON</button>
           </div>
 
           <div id="output" class="hidden">
             <h3 class="font-bold text-stone-800 mb-2">Generated JSON</h3>
             <p class="text-sm text-stone-600 mb-2">
-              Save this as <code id="outputFilename" class="bg-stone-100 px-1"></code> in your repo, commit, and push.
-              Then add the week number to <code class="bg-stone-100 px-1">data/manifest.json</code>.
+              Save this as <code id="outputFilename" class="bg-stone-100 px-1"></code>.
             </p>
-            <textarea id="jsonOutput" class="w-full h-80 font-mono text-xs border border-stone-300 rounded p-3 bg-stone-50"></textarea>
+            <textarea id="jsonOutput" class="w-full h-72 font-mono text-xs border border-stone-300 rounded p-3 bg-stone-50"></textarea>
             <div id="livePreview" class="mt-6"></div>
           </div>
         `;
 
         const weekPicker = document.getElementById('weekPicker');
+        const ninePicker = document.getElementById('ninePicker');
         const matchesArea = document.getElementById('matchesArea');
         const generateBtn = document.getElementById('generateBtn');
         const copyBtn = document.getElementById('copyBtn');
@@ -70,139 +82,186 @@
         const outputFilename = document.getElementById('outputFilename');
         const livePreview = document.getElementById('livePreview');
 
-        function renderPlayerOptions(team, selectedId) {
-          return team.players.map(p =>
-            `<option value="${p.id}" ${p.id === selectedId ? 'selected' : ''}>${playerLabel(p)}</option>`
-          ).join('');
+        function holeHeadersFor(nine) {
+          const startIdx = nine === 'back' ? 9 : 0;
+          return DataStore.scorecard.holes.slice(startIdx, startIdx + 9);
+        }
+
+        function playerRow(rowKey, teamId, player, holes, handicap, holeScores, isSub, subName) {
+          const holesCells = holes.map((h, i) => `
+            <td class="px-1 py-1 text-center">
+              <input type="number" min="1" max="15" value="${holeScores && holeScores[i] != null ? holeScores[i] : ''}"
+                class="hole-input border border-stone-300 rounded px-1 py-1 text-center text-sm" data-hole="${i}" />
+              <div class="text-[10px] text-stone-400">P${h.par}/HCP${h.hcpIndex}</div>
+            </td>
+          `).join('');
+          const playerCell = isSub
+            ? `<input type="text" value="${subName || ''}" placeholder="Sub name" data-sub-name class="border border-stone-300 rounded px-2 py-1 text-sm w-32" />`
+            : `<span class="font-semibold">${player.nickname || player.name}</span><div class="text-[11px] text-stone-500">${player.name}</div>`;
+          return `
+            <tr class="border-t border-stone-100" data-row="${rowKey}" data-team="${teamId}" data-player="${player ? player.id : ''}" data-is-sub="${isSub ? '1' : '0'}">
+              <td class="px-2 py-1 text-sm align-top">${playerCell}</td>
+              <td class="px-2 py-1 align-top">
+                <input type="number" min="0" max="40" value="${handicap != null ? handicap : (player ? player.handicap : '')}" data-hcp class="border border-stone-300 rounded px-2 py-1 text-sm w-16 text-center" />
+              </td>
+              ${holesCells}
+              <td class="px-2 py-1 text-right text-sm font-semibold text-stone-600 align-top">
+                <span data-row-total>&mdash;</span>
+              </td>
+              <td class="px-2 py-1 align-top">
+                <button type="button" data-remove class="text-xs text-stone-400 hover:text-red-600">&times;</button>
+              </td>
+            </tr>
+          `;
         }
 
         function renderMatches() {
           const w = Number(weekPicker.value);
           const wk = DataStore.schedule.find(s => s.week === w);
           if (!wk) { matchesArea.innerHTML = ''; return; }
+          ninePicker.value = wk.nine || 'front';
           const existing = DataStore.scoresByWeek[w];
+          const nine = ninePicker.value;
+          const holes = holeHeadersFor(nine);
+
+          const headerRow = `
+            <tr class="bg-stone-100 text-xs text-stone-600">
+              <th class="px-2 py-2 text-left">Player</th>
+              <th class="px-2 py-2 text-center">HCP</th>
+              ${holes.map(h => `<th class="px-1 py-2 text-center">${h.hole}</th>`).join('')}
+              <th class="px-2 py-2 text-right">Pts</th>
+              <th class="px-1 py-2"></th>
+            </tr>
+          `;
 
           matchesArea.innerHTML = wk.matches.map((m, mi) => {
             const tA = DataStore.teamById(m.teamA);
             const tB = DataStore.teamById(m.teamB);
             const exMatch = existing ? existing.matches[mi] : null;
 
-            // Default lineup: first two players from each team (or whatever played last time)
-            const lineupA0 = exMatch ? exMatch.pairings[0].playerA : tA.players[0].id;
-            const lineupA1 = exMatch ? exMatch.pairings[1].playerA : (tA.players[1] && tA.players[1].id);
-            const lineupB0 = exMatch ? exMatch.pairings[0].playerB : tB.players[0].id;
-            const lineupB1 = exMatch ? exMatch.pairings[1].playerB : (tB.players[1] && tB.players[1].id);
+            const partsA = (exMatch ? exMatch.participants : []).filter(p => p.teamId === m.teamA);
+            const partsB = (exMatch ? exMatch.participants : []).filter(p => p.teamId === m.teamB);
 
-            // Handicap defaults
-            const hcpA = id => {
-              const p = tA.players.find(x => x.id === id);
-              return p ? p.handicap : 0;
-            };
-            const hcpB = id => {
-              const p = tB.players.find(x => x.id === id);
-              return p ? p.handicap : 0;
-            };
+            const aRows = tA.players.map(p => {
+              const ex = partsA.find(x => x.playerId === p.id && !x.isSub);
+              return playerRow(`a-${p.id}`, m.teamA, p, holes, ex ? ex.handicap : p.handicap, ex ? ex.holes : null, false, null);
+            }).join('') + partsA.filter(x => x.isSub).map((sub, si) =>
+              playerRow(`a-sub-${si}`, m.teamA, { id: sub.playerId }, holes, sub.handicap, sub.holes, true, sub.subName)
+            ).join('');
 
-            const ex0 = exMatch ? exMatch.pairings[0] : null;
-            const ex1 = exMatch ? exMatch.pairings[1] : null;
+            const bRows = tB.players.map(p => {
+              const ex = partsB.find(x => x.playerId === p.id && !x.isSub);
+              return playerRow(`b-${p.id}`, m.teamB, p, holes, ex ? ex.handicap : p.handicap, ex ? ex.holes : null, false, null);
+            }).join('') + partsB.filter(x => x.isSub).map((sub, si) =>
+              playerRow(`b-sub-${si}`, m.teamB, { id: sub.playerId }, holes, sub.handicap, sub.holes, true, sub.subName)
+            ).join('');
 
             return `
-              <div class="bg-white rounded-lg shadow-sm border border-stone-200 p-4" data-match="${mi}" data-team-a="${m.teamA}" data-team-b="${m.teamB}">
-                <h3 class="font-bold text-stone-800 mb-3">${tA.name} <span class="text-stone-400">vs</span> ${tB.name}</h3>
-
-                <!-- Pairing 1 -->
-                <div class="grid grid-cols-1 sm:grid-cols-7 gap-2 items-center mb-3 pb-3 border-b border-stone-100" data-pairing="0">
-                  <select class="sm:col-span-2 border border-stone-300 rounded px-2 py-1 text-sm" data-player-a-pick>${renderPlayerOptions(tA, lineupA0)}</select>
-                  <input type="number" placeholder="Gross" value="${ex0 ? ex0.playerAGross : ''}" data-player-a-gross class="border border-stone-300 rounded px-2 py-1 text-sm" />
-                  <input type="number" placeholder="HCP"   value="${ex0 ? ex0.playerAHandicap : hcpA(lineupA0)}" data-player-a-hcp class="border border-stone-300 rounded px-2 py-1 text-sm" />
-                  <select class="sm:col-span-2 border border-stone-300 rounded px-2 py-1 text-sm" data-player-b-pick>${renderPlayerOptions(tB, lineupB0)}</select>
-                  <input type="number" placeholder="Gross" value="${ex0 ? ex0.playerBGross : ''}" data-player-b-gross class="border border-stone-300 rounded px-2 py-1 text-sm" />
-                  <input type="number" placeholder="HCP"   value="${ex0 ? ex0.playerBHandicap : hcpB(lineupB0)}" data-player-b-hcp class="border border-stone-300 rounded px-2 py-1 text-sm" />
-                  <div class="sm:col-span-7">
-                    <label class="text-xs text-stone-600 mr-2">Match-play winner:</label>
-                    <select data-match-play class="border border-stone-300 rounded px-2 py-1 text-xs">
-                      <option value="A">Team A player</option>
-                      <option value="B">Team B player</option>
-                      <option value="halved" ${ex0 && ex0.matchPlayWinner === 'halved' ? 'selected' : ''}>Halved</option>
-                    </select>
-                  </div>
+              <div class="bg-white rounded-lg shadow-sm border border-stone-200 p-3 overflow-x-auto" data-match="${mi}" data-team-a="${m.teamA}" data-team-b="${m.teamB}">
+                <h3 class="font-bold text-stone-800 mb-2">${tA.name} <span class="text-stone-400">vs</span> ${tB.name}</h3>
+                <table class="min-w-full text-sm" data-section="A">
+                  <thead>${headerRow}</thead>
+                  <tbody>${aRows}</tbody>
+                </table>
+                <div class="my-2">
+                  <button type="button" data-add-sub="A" class="text-xs text-emerald-700 hover:underline">+ Add sub for ${tA.name}</button>
                 </div>
-
-                <!-- Pairing 2 -->
-                <div class="grid grid-cols-1 sm:grid-cols-7 gap-2 items-center" data-pairing="1">
-                  <select class="sm:col-span-2 border border-stone-300 rounded px-2 py-1 text-sm" data-player-a-pick>${renderPlayerOptions(tA, lineupA1)}</select>
-                  <input type="number" placeholder="Gross" value="${ex1 ? ex1.playerAGross : ''}" data-player-a-gross class="border border-stone-300 rounded px-2 py-1 text-sm" />
-                  <input type="number" placeholder="HCP"   value="${ex1 ? ex1.playerAHandicap : hcpA(lineupA1)}" data-player-a-hcp class="border border-stone-300 rounded px-2 py-1 text-sm" />
-                  <select class="sm:col-span-2 border border-stone-300 rounded px-2 py-1 text-sm" data-player-b-pick>${renderPlayerOptions(tB, lineupB1)}</select>
-                  <input type="number" placeholder="Gross" value="${ex1 ? ex1.playerBGross : ''}" data-player-b-gross class="border border-stone-300 rounded px-2 py-1 text-sm" />
-                  <input type="number" placeholder="HCP"   value="${ex1 ? ex1.playerBHandicap : hcpB(lineupB1)}" data-player-b-hcp class="border border-stone-300 rounded px-2 py-1 text-sm" />
-                  <div class="sm:col-span-7">
-                    <label class="text-xs text-stone-600 mr-2">Match-play winner:</label>
-                    <select data-match-play class="border border-stone-300 rounded px-2 py-1 text-xs">
-                      <option value="A">Team A player</option>
-                      <option value="B">Team B player</option>
-                      <option value="halved" ${ex1 && ex1.matchPlayWinner === 'halved' ? 'selected' : ''}>Halved</option>
-                    </select>
-                  </div>
+                <table class="min-w-full text-sm" data-section="B">
+                  <thead>${headerRow}</thead>
+                  <tbody>${bRows}</tbody>
+                </table>
+                <div class="my-2">
+                  <button type="button" data-add-sub="B" class="text-xs text-emerald-700 hover:underline">+ Add sub for ${tB.name}</button>
                 </div>
-
-                ${tA.players.length > 2 || tB.players.length > 2 ? `
-                  <p class="text-xs text-amber-700 mt-3">Tip: this match has a 3-player team — use the dropdowns to pick this week's lineup.</p>
-                ` : ''}
               </div>
             `;
           }).join('');
 
-          // When player dropdown changes, auto-fill that player's handicap
-          matchesArea.querySelectorAll('[data-player-a-pick]').forEach(sel => {
-            sel.addEventListener('change', () => {
-              const matchEl = sel.closest('[data-match]');
-              const teamId = matchEl.dataset.teamA;
-              const team = DataStore.teamById(teamId);
-              const player = team.players.find(p => p.id === sel.value);
-              const hcpInput = sel.parentElement.querySelector('[data-player-a-hcp]');
-              if (player && hcpInput) hcpInput.value = player.handicap;
+          attachHandlers();
+        }
+
+        function attachHandlers() {
+          matchesArea.querySelectorAll('input').forEach(inp => {
+            inp.addEventListener('input', recomputeRowTotals);
+          });
+          matchesArea.querySelectorAll('[data-remove]').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const row = btn.closest('tr');
+              if (row.dataset.isSub === '1') {
+                row.remove();
+                recomputeRowTotals();
+              } else {
+                // Regular player: clear inputs instead of removing
+                row.querySelectorAll('input').forEach(i => { i.value = ''; });
+                recomputeRowTotals();
+              }
             });
           });
-          matchesArea.querySelectorAll('[data-player-b-pick]').forEach(sel => {
-            sel.addEventListener('change', () => {
-              const matchEl = sel.closest('[data-match]');
-              const teamId = matchEl.dataset.teamB;
-              const team = DataStore.teamById(teamId);
-              const player = team.players.find(p => p.id === sel.value);
-              const hcpInput = sel.parentElement.querySelector('[data-player-b-hcp]');
-              if (player && hcpInput) hcpInput.value = player.handicap;
+          matchesArea.querySelectorAll('[data-add-sub]').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const matchEl = btn.closest('[data-match]');
+              const which = btn.dataset.addSub;
+              const teamId = which === 'A' ? matchEl.dataset.teamA : matchEl.dataset.teamB;
+              const tbody = matchEl.querySelector(`table[data-section="${which}"] tbody`);
+              const subId = `sub-${Date.now()}`;
+              const holes = holeHeadersFor(ninePicker.value);
+              tbody.insertAdjacentHTML('beforeend', playerRow(subId, teamId, { id: subId }, holes, '', null, true, ''));
+              attachHandlers();
             });
+          });
+          recomputeRowTotals();
+        }
+
+        function recomputeRowTotals() {
+          const nine = ninePicker.value;
+          matchesArea.querySelectorAll('tr[data-row]').forEach(row => {
+            const hcp = Number(row.querySelector('[data-hcp]').value) || 0;
+            const holes = Array.from(row.querySelectorAll('[data-hole]')).map(i => i.value === '' ? null : Number(i.value));
+            const r = Scoring.pointsForRound(holes, hcp, nine, DataStore.scorecard);
+            const cell = row.querySelector('[data-row-total]');
+            if (r.holesPlayed === 0) cell.textContent = '—';
+            else cell.textContent = UI.formatPoints(r.total) + ` (+1)`;
           });
         }
 
         weekPicker.addEventListener('change', renderMatches);
+        ninePicker.addEventListener('change', renderMatches);
         renderMatches();
 
         function buildJson() {
           const w = Number(weekPicker.value);
           const wk = DataStore.schedule.find(s => s.week === w);
+          const nine = ninePicker.value;
+
           const matches = Array.from(matchesArea.querySelectorAll('[data-match]')).map(matchEl => {
             const teamA = matchEl.dataset.teamA;
             const teamB = matchEl.dataset.teamB;
-            const pairings = Array.from(matchEl.querySelectorAll('[data-pairing]')).map(pairEl => {
-              const pAId = pairEl.querySelector('[data-player-a-pick]').value;
-              const pBId = pairEl.querySelector('[data-player-b-pick]').value;
-              const mpRaw = pairEl.querySelector('[data-match-play]').value;
-              const matchPlayWinner = mpRaw === 'A' ? pAId : mpRaw === 'B' ? pBId : 'halved';
-              return {
-                playerA: pAId,
-                playerAGross: Number(pairEl.querySelector('[data-player-a-gross]').value),
-                playerAHandicap: Number(pairEl.querySelector('[data-player-a-hcp]').value),
-                playerB: pBId,
-                playerBGross: Number(pairEl.querySelector('[data-player-b-gross]').value),
-                playerBHandicap: Number(pairEl.querySelector('[data-player-b-hcp]').value),
-                matchPlayWinner,
-              };
+            const rows = Array.from(matchEl.querySelectorAll('tr[data-row]'));
+            const participants = [];
+            rows.forEach(row => {
+              const hcp = Number(row.querySelector('[data-hcp]').value) || 0;
+              const holes = Array.from(row.querySelectorAll('[data-hole]')).map(i => i.value === '' ? null : Number(i.value));
+              const played = holes.some(h => h != null && h > 0);
+              if (!played) return; // skip no-shows
+              const teamId = row.dataset.team;
+              const isSub = row.dataset.isSub === '1';
+              let playerId, subName = null;
+              if (isSub) {
+                const sn = (row.querySelector('[data-sub-name]')?.value || '').trim();
+                subName = sn || 'Sub';
+                playerId = 'sub-' + (subName.toLowerCase().replace(/[^a-z0-9]+/g, '-') || Date.now());
+              } else {
+                playerId = row.dataset.player;
+              }
+              participants.push({
+                teamId, playerId, isSub, subName,
+                handicap: hcp, holes,
+              });
             });
-            return { teamA, teamB, pairings };
+            return { teamA, teamB, participants };
           });
-          return { week: w, date: wk.date, matches };
+
+          return { week: w, date: wk.date, nine, matches };
         }
 
         generateBtn.addEventListener('click', () => {
@@ -212,7 +271,7 @@
           output.classList.remove('hidden');
           copyBtn.classList.remove('hidden');
 
-          const preview = data.matches.map(m => Scoring.scoreMatch(m));
+          const preview = data.matches.map(m => Scoring.scoreMatch({ ...m, nine: data.nine }, DataStore.scorecard));
           livePreview.innerHTML = `
             <h3 class="font-bold text-stone-800 mb-2">Preview</h3>
             <div class="grid gap-3 sm:grid-cols-2">
@@ -221,8 +280,8 @@
                 const tB = DataStore.teamById(p.teamB);
                 return `
                   <div class="bg-emerald-50 border border-emerald-200 rounded p-3 text-sm">
-                    <div class="flex justify-between"><span>${tA.name}</span><span class="font-bold">${UI.formatPoints(p.pointsA)}</span></div>
-                    <div class="flex justify-between"><span>${tB.name}</span><span class="font-bold">${UI.formatPoints(p.pointsB)}</span></div>
+                    <div class="flex justify-between"><span>${tA.name}</span><span><span class="text-stone-500 text-xs mr-1">${UI.formatPoints(p.teamATotal)} ind</span><span class="font-bold">${UI.formatPoints(p.teamAPoints)} pts</span></span></div>
+                    <div class="flex justify-between"><span>${tB.name}</span><span><span class="text-stone-500 text-xs mr-1">${UI.formatPoints(p.teamBTotal)} ind</span><span class="font-bold">${UI.formatPoints(p.teamBPoints)} pts</span></span></div>
                   </div>
                 `;
               }).join('')}
@@ -233,7 +292,7 @@
         copyBtn.addEventListener('click', async () => {
           await navigator.clipboard.writeText(jsonOutput.value);
           copyBtn.textContent = 'Copied!';
-          setTimeout(() => copyBtn.textContent = 'Copy to Clipboard', 1500);
+          setTimeout(() => copyBtn.textContent = 'Copy JSON', 1500);
         });
       } catch (e) {
         console.error(e);

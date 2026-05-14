@@ -1,0 +1,28 @@
+{
+  "_note": "Audubon Golf Course (500 Maple Rd., Amherst NY). Men's tees. Source: scorecard PDF.",
+  "course": "Audubon Golf Course",
+  "tees": "Men's",
+  "holes": [
+    { "hole": 1,  "par": 4, "hcpIndex": 11 },
+    { "hole": 2,  "par": 4, "hcpIndex": 3  },
+    { "hole": 3,  "par": 3, "hcpIndex": 13 },
+    { "hole": 4,  "par": 4, "hcpIndex": 5  },
+    { "hole": 5,  "par": 4, "hcpIndex": 1  },
+    { "hole": 6,  "par": 3, "hcpIndex": 9  },
+    { "hole": 7,  "par": 4, "hcpIndex": 7  },
+    { "hole": 8,  "par": 5, "hcpIndex": 15 },
+    { "hole": 9,  "par": 4, "hcpIndex": 17 },
+    { "hole": 10, "par": 4, "hcpIndex": 2  },
+    { "hole": 11, "par": 4, "hcpIndex": 18 },
+    { "hole": 12, "par": 5, "hcpIndex": 12 },
+    { "hole": 13, "par": 4, "hcpIndex": 8  },
+    { "hole": 14, "par": 4, "hcpIndex": 6  },
+    { "hole": 15, "par": 3, "hcpIndex": 16 },
+    { "hole": 16, "par": 4, "hcpIndex": 14 },
+    { "hole": 17, "par": 4, "hcpIndex": 4  },
+    { "hole": 18, "par": 4, "hcpIndex": 10 }
+  ],
+  "frontPar": 35,
+  "backPar": 36,
+  "totalPar": 71
+}

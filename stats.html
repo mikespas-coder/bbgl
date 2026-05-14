@@ -10,7 +10,7 @@
 <body class="bg-stone-50 text-stone-900">
   <header id="app-header"></header>
   <main id="app-main" class="max-w-5xl mx-auto px-4 py-8">
-    <p class="text-stone-500">Loading stats&hellip;</p>
+    <p class="text-stone-500">Loading&hellip;</p>
   </main>
 
   <script src="assets/js/data.js"></script>
@@ -22,75 +22,54 @@
         await DataStore.loadAll();
         UI.renderHeader('stats.html');
 
-        const stats = Scoring.computePlayerStats(DataStore.teams, DataStore.scoresByWeek)
-          .filter(s => s.rounds > 0);
-
+        const { playerStandings, weeks } = Scoring.computeSeason(
+          DataStore.teams, DataStore.scoresByWeek, DataStore.scorecard
+        );
         const main = document.getElementById('app-main');
+        const weeksPlayed = Object.keys(weeks).length;
 
-        if (stats.length === 0) {
+        if (weeksPlayed === 0) {
           main.innerHTML = `
-            <h2 class="text-2xl font-bold text-stone-800 mb-2">Stats</h2>
-            <p class="text-stone-500">Stats will populate once weekly scores are entered.</p>
+            <h2 class="text-2xl font-bold text-stone-800 mb-2">Stats &amp; Accolades</h2>
+            <div class="bg-amber-50 border border-amber-200 rounded-lg p-6 text-amber-900">
+              <p class="font-semibold mb-1">No rounds played yet.</p>
+              <p class="text-sm">Once Brian enters scores for week 1, this page will fill in.</p>
+            </div>
           `;
           return;
         }
 
-        const lowGross = [...stats].sort((a,b) => a.lowGross - b.lowGross).slice(0, 5);
-        const lowNet   = [...stats].sort((a,b) => a.lowNet   - b.lowNet  ).slice(0, 5);
-        const mostMatchPlayWins = [...stats].sort((a,b) => b.matchPlayWins - a.matchPlayWins).slice(0, 5);
-        const avgNet = [...stats].sort((a,b) => (a.totalNet/a.rounds) - (b.totalNet/b.rounds));
+        function topBy(field, n = 5) {
+          return [...playerStandings].filter(p => p.weeksPlayed > 0).sort((a, b) => (b[field]||0) - (a[field]||0)).slice(0, n);
+        }
 
-        const renderList = (rows, valueFn, valueLabel) => `
-          <div class="bg-white rounded-lg shadow-sm border border-stone-200 p-4">
-            <h3 class="font-bold text-stone-800 mb-3">${valueLabel}</h3>
-            <ol class="space-y-2 text-sm">
-              ${rows.map((s, i) => `
-                <li class="flex justify-between">
-                  <span><span class="text-stone-400 mr-2">${i+1}.</span>${s.name} <span class="text-stone-400 text-xs">(${s.teamName})</span></span>
-                  <span class="font-semibold">${valueFn(s)}</span>
-                </li>
-              `).join('')}
-            </ol>
-          </div>
-        `;
+        function statCard(title, list, statField) {
+          return `
+            <div class="bg-white rounded-lg shadow-sm border border-stone-200 p-4">
+              <h3 class="font-bold text-stone-800 mb-2">${title}</h3>
+              <ol class="space-y-1 text-sm">
+                ${list.map((p, i) => `
+                  <li class="flex justify-between">
+                    <span><span class="text-stone-400 mr-2">${i+1}.</span>${p.name}${p.isSub ? ' <span class="text-xs text-stone-400">(sub)</span>' : ''}</span>
+                    <span class="font-semibold">${UI.formatPoints(p[statField]||0)}</span>
+                  </li>
+                `).join('')}
+              </ol>
+            </div>
+          `;
+        }
 
         main.innerHTML = `
-          <h2 class="text-2xl font-bold text-stone-800 mb-6">Season Stats</h2>
-          <div class="grid gap-4 md:grid-cols-2 mb-8">
-            ${renderList(lowGross, s => s.lowGross, 'Low Gross Round')}
-            ${renderList(lowNet,   s => s.lowNet,   'Low Net Round')}
-            ${renderList(mostMatchPlayWins, s => s.matchPlayWins, 'Match Play Wins')}
-            ${renderList(avgNet, s => (s.totalNet/s.rounds).toFixed(1), 'Best Avg Net')}
-          </div>
+          <h2 class="text-2xl font-bold text-stone-800 mb-1">Stats &amp; Accolades</h2>
+          <p class="text-stone-500 text-sm mb-6">${weeksPlayed} ${weeksPlayed === 1 ? 'week' : 'weeks'} of data so far</p>
 
-          <h3 class="text-xl font-bold text-stone-800 mb-3">All Players</h3>
-          <div class="overflow-x-auto bg-white rounded-lg shadow-sm border border-stone-200">
-            <table class="w-full text-sm">
-              <thead class="bg-stone-100 text-stone-600">
-                <tr>
-                  <th class="text-left px-3 py-2">Player</th>
-                  <th class="text-left px-3 py-2">Team</th>
-                  <th class="text-right px-3 py-2">Rounds</th>
-                  <th class="text-right px-3 py-2">Avg Gross</th>
-                  <th class="text-right px-3 py-2">Avg Net</th>
-                  <th class="text-right px-3 py-2">MP W&ndash;L&ndash;H</th>
-                  <th class="text-right px-3 py-2">SP W&ndash;L&ndash;H</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${stats.map(s => `
-                  <tr class="standings-row border-t border-stone-100">
-                    <td class="px-3 py-2 font-semibold">${s.name}</td>
-                    <td class="px-3 py-2 text-stone-600">${s.teamName}</td>
-                    <td class="px-3 py-2 text-right">${s.rounds}</td>
-                    <td class="px-3 py-2 text-right">${(s.totalGross/s.rounds).toFixed(1)}</td>
-                    <td class="px-3 py-2 text-right">${(s.totalNet/s.rounds).toFixed(1)}</td>
-                    <td class="px-3 py-2 text-right">${s.matchPlayWins}&ndash;${s.matchPlayLosses}&ndash;${s.matchPlayHalves}</td>
-                    <td class="px-3 py-2 text-right">${s.strokePlayWins}&ndash;${s.strokePlayLosses}&ndash;${s.strokePlayHalves}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
+          <div class="grid sm:grid-cols-2 gap-4">
+            ${statCard('Season Points Leader', topBy('totalPoints', 5), 'totalPoints')}
+            ${statCard('Most Birdies', topBy('birdies', 5), 'birdies')}
+            ${statCard('Most Pars', topBy('pars', 5), 'pars')}
+            ${statCard('Most Weeks Played', topBy('weeksPlayed', 5), 'weeksPlayed')}
+            ${statCard('Eagles', topBy('eagles', 5), 'eagles')}
+            ${statCard('Hole-in-Ones', topBy('holeInOnes', 5), 'holeInOnes')}
           </div>
         `;
       } catch (e) {

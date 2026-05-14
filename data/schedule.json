@@ -1,311 +1,325 @@
 {
-  "_note": "Auto-generated double round-robin for 8 teams, Friday nights starting 5/8/2026, skipping 7/3 for the holiday weekend. Brian: edit dates/matchups freely.",
+  "_note": "Updated 5/14/2026 for new format. 14 weeks, Fridays starting 5/22 (after the 5/15 handicap-setting round), skipping 7/3 for Independence Day weekend. 'nine' alternates front/back each week.",
   "schedule": [
     {
       "week": 1,
-      "date": "2026-05-08",
+      "date": "2026-05-22",
+      "nine": "front",
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "wagner-jamie"
+          "teamB": "timmy-paul"
         },
         {
-          "teamA": "tokin-strokin",
-          "teamB": "drew-buddy"
+          "teamA": "zach-matt",
+          "teamB": "drew-jamie"
         },
         {
-          "teamA": "polish-princesses",
-          "teamB": "big-fred-jack"
+          "teamA": "joe-adam",
+          "teamB": "big-fred-buddy"
         },
         {
-          "teamA": "squatch-setup",
-          "teamB": "throuple"
+          "teamA": "vito-hannigan",
+          "teamB": "kevin-brian"
         }
       ]
     },
     {
       "week": 2,
-      "date": "2026-05-15",
+      "date": "2026-05-29",
+      "nine": "back",
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "drew-buddy"
+          "teamB": "drew-jamie"
         },
         {
-          "teamA": "wagner-jamie",
-          "teamB": "big-fred-jack"
+          "teamA": "timmy-paul",
+          "teamB": "big-fred-buddy"
         },
         {
-          "teamA": "tokin-strokin",
-          "teamB": "throuple"
+          "teamA": "zach-matt",
+          "teamB": "kevin-brian"
         },
         {
-          "teamA": "polish-princesses",
-          "teamB": "squatch-setup"
+          "teamA": "joe-adam",
+          "teamB": "vito-hannigan"
         }
       ]
     },
     {
       "week": 3,
-      "date": "2026-05-22",
+      "date": "2026-06-05",
+      "nine": "front",
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "big-fred-jack"
+          "teamB": "big-fred-buddy"
         },
         {
-          "teamA": "drew-buddy",
-          "teamB": "throuple"
+          "teamA": "drew-jamie",
+          "teamB": "kevin-brian"
         },
         {
-          "teamA": "wagner-jamie",
-          "teamB": "squatch-setup"
+          "teamA": "timmy-paul",
+          "teamB": "vito-hannigan"
         },
         {
-          "teamA": "tokin-strokin",
-          "teamB": "polish-princesses"
+          "teamA": "zach-matt",
+          "teamB": "joe-adam"
         }
       ]
     },
     {
       "week": 4,
-      "date": "2026-05-29",
+      "date": "2026-06-12",
+      "nine": "back",
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "throuple"
+          "teamB": "kevin-brian"
         },
         {
-          "teamA": "big-fred-jack",
-          "teamB": "squatch-setup"
+          "teamA": "big-fred-buddy",
+          "teamB": "vito-hannigan"
         },
         {
-          "teamA": "drew-buddy",
-          "teamB": "polish-princesses"
+          "teamA": "drew-jamie",
+          "teamB": "joe-adam"
         },
         {
-          "teamA": "wagner-jamie",
-          "teamB": "tokin-strokin"
+          "teamA": "timmy-paul",
+          "teamB": "zach-matt"
         }
       ]
     },
     {
       "week": 5,
-      "date": "2026-06-05",
+      "date": "2026-06-19",
+      "nine": "front",
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "squatch-setup"
+          "teamB": "vito-hannigan"
         },
         {
-          "teamA": "throuple",
-          "teamB": "polish-princesses"
+          "teamA": "kevin-brian",
+          "teamB": "joe-adam"
         },
         {
-          "teamA": "big-fred-jack",
-          "teamB": "tokin-strokin"
+          "teamA": "big-fred-buddy",
+          "teamB": "zach-matt"
         },
         {
-          "teamA": "drew-buddy",
-          "teamB": "wagner-jamie"
+          "teamA": "drew-jamie",
+          "teamB": "timmy-paul"
         }
       ]
     },
     {
       "week": 6,
-      "date": "2026-06-12",
+      "date": "2026-06-26",
+      "nine": "back",
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "polish-princesses"
+          "teamB": "joe-adam"
         },
         {
-          "teamA": "squatch-setup",
-          "teamB": "tokin-strokin"
+          "teamA": "vito-hannigan",
+          "teamB": "zach-matt"
         },
         {
-          "teamA": "throuple",
-          "teamB": "wagner-jamie"
+          "teamA": "kevin-brian",
+          "teamB": "timmy-paul"
         },
         {
-          "teamA": "big-fred-jack",
-          "teamB": "drew-buddy"
+          "teamA": "big-fred-buddy",
+          "teamB": "drew-jamie"
         }
       ]
     },
     {
       "week": 7,
-      "date": "2026-06-19",
+      "date": "2026-07-10",
+      "nine": "front",
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "tokin-strokin"
+          "teamB": "zach-matt"
         },
         {
-          "teamA": "polish-princesses",
-          "teamB": "wagner-jamie"
+          "teamA": "joe-adam",
+          "teamB": "timmy-paul"
         },
         {
-          "teamA": "squatch-setup",
-          "teamB": "drew-buddy"
+          "teamA": "vito-hannigan",
+          "teamB": "drew-jamie"
         },
         {
-          "teamA": "throuple",
-          "teamB": "big-fred-jack"
+          "teamA": "kevin-brian",
+          "teamB": "big-fred-buddy"
         }
       ]
     },
     {
       "week": 8,
-      "date": "2026-06-26",
+      "date": "2026-07-17",
+      "nine": "back",
       "matches": [
         {
-          "teamA": "wagner-jamie",
+          "teamA": "timmy-paul",
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "drew-buddy",
-          "teamB": "tokin-strokin"
+          "teamA": "drew-jamie",
+          "teamB": "zach-matt"
         },
         {
-          "teamA": "big-fred-jack",
-          "teamB": "polish-princesses"
+          "teamA": "big-fred-buddy",
+          "teamB": "joe-adam"
         },
         {
-          "teamA": "throuple",
-          "teamB": "squatch-setup"
+          "teamA": "kevin-brian",
+          "teamB": "vito-hannigan"
         }
       ]
     },
     {
       "week": 9,
-      "date": "2026-07-10",
+      "date": "2026-07-24",
+      "nine": "front",
       "matches": [
         {
-          "teamA": "drew-buddy",
+          "teamA": "drew-jamie",
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "big-fred-jack",
-          "teamB": "wagner-jamie"
+          "teamA": "big-fred-buddy",
+          "teamB": "timmy-paul"
         },
         {
-          "teamA": "throuple",
-          "teamB": "tokin-strokin"
+          "teamA": "kevin-brian",
+          "teamB": "zach-matt"
         },
         {
-          "teamA": "squatch-setup",
-          "teamB": "polish-princesses"
+          "teamA": "vito-hannigan",
+          "teamB": "joe-adam"
         }
       ]
     },
     {
       "week": 10,
-      "date": "2026-07-17",
+      "date": "2026-07-31",
+      "nine": "back",
       "matches": [
         {
-          "teamA": "big-fred-jack",
+          "teamA": "big-fred-buddy",
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "throuple",
-          "teamB": "drew-buddy"
+          "teamA": "kevin-brian",
+          "teamB": "drew-jamie"
         },
         {
-          "teamA": "squatch-setup",
-          "teamB": "wagner-jamie"
+          "teamA": "vito-hannigan",
+          "teamB": "timmy-paul"
         },
         {
-          "teamA": "polish-princesses",
-          "teamB": "tokin-strokin"
+          "teamA": "joe-adam",
+          "teamB": "zach-matt"
         }
       ]
     },
     {
       "week": 11,
-      "date": "2026-07-24",
+      "date": "2026-08-07",
+      "nine": "front",
       "matches": [
         {
-          "teamA": "throuple",
+          "teamA": "kevin-brian",
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "squatch-setup",
-          "teamB": "big-fred-jack"
+          "teamA": "vito-hannigan",
+          "teamB": "big-fred-buddy"
         },
         {
-          "teamA": "polish-princesses",
-          "teamB": "drew-buddy"
+          "teamA": "joe-adam",
+          "teamB": "drew-jamie"
         },
         {
-          "teamA": "tokin-strokin",
-          "teamB": "wagner-jamie"
+          "teamA": "zach-matt",
+          "teamB": "timmy-paul"
         }
       ]
     },
     {
       "week": 12,
-      "date": "2026-07-31",
+      "date": "2026-08-14",
+      "nine": "back",
       "matches": [
         {
-          "teamA": "squatch-setup",
+          "teamA": "vito-hannigan",
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "polish-princesses",
-          "teamB": "throuple"
+          "teamA": "joe-adam",
+          "teamB": "kevin-brian"
         },
         {
-          "teamA": "tokin-strokin",
-          "teamB": "big-fred-jack"
+          "teamA": "zach-matt",
+          "teamB": "big-fred-buddy"
         },
         {
-          "teamA": "wagner-jamie",
-          "teamB": "drew-buddy"
+          "teamA": "timmy-paul",
+          "teamB": "drew-jamie"
         }
       ]
     },
     {
       "week": 13,
-      "date": "2026-08-07",
+      "date": "2026-08-21",
+      "nine": "front",
       "matches": [
         {
-          "teamA": "polish-princesses",
+          "teamA": "joe-adam",
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "tokin-strokin",
-          "teamB": "squatch-setup"
+          "teamA": "zach-matt",
+          "teamB": "vito-hannigan"
         },
         {
-          "teamA": "wagner-jamie",
-          "teamB": "throuple"
+          "teamA": "timmy-paul",
+          "teamB": "kevin-brian"
         },
         {
-          "teamA": "drew-buddy",
-          "teamB": "big-fred-jack"
+          "teamA": "drew-jamie",
+          "teamB": "big-fred-buddy"
         }
       ]
     },
     {
       "week": 14,
-      "date": "2026-08-14",
+      "date": "2026-08-28",
+      "nine": "back",
       "matches": [
         {
-          "teamA": "tokin-strokin",
+          "teamA": "zach-matt",
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "wagner-jamie",
-          "teamB": "polish-princesses"
+          "teamA": "timmy-paul",
+          "teamB": "joe-adam"
         },
         {
-          "teamA": "drew-buddy",
-          "teamB": "squatch-setup"
+          "teamA": "drew-jamie",
+          "teamB": "vito-hannigan"
         },
         {
-          "teamA": "big-fred-jack",
-          "teamB": "throuple"
+          "teamA": "big-fred-buddy",
+          "teamB": "kevin-brian"
         }
       ]
     }

@@ -1,77 +1,70 @@
 {
-  "_note": "Source: Brian's BBGL Update email of 4/19/2026 + replies. Handicaps placeholder 0 -- update after the May 1 handicap round. TBD names are open items for Brian to confirm.",
+  "_note": "Updated for the new format per Brian's email on 5/14/2026. All 2-man teams now. Handicaps placeholder 0 -- update after the 5/15/2026 handicap-setting round.",
   "teams": [
     {
       "id": "golfin-guidos",
       "name": "Golfin' Guidos",
       "tagline": "Defending two-time champs",
       "players": [
-        { "id": "spas",   "name": "Michael Spasiano",         "nickname": "Spas",  "handicap": 0 },
-        { "id": "ckheinle","name": "Christopher Karl Heinle", "nickname": "CK",    "handicap": 0 }
+        { "id": "spas",     "name": "Michael Spasiano",         "nickname": "Spas", "handicap": 0 },
+        { "id": "ckheinle", "name": "Christopher Karl Heinle",  "nickname": "CK",   "handicap": 0 }
       ]
     },
     {
-      "id": "tokin-strokin",
-      "name": "Tokin' & Strokin'",
+      "id": "timmy-paul",
+      "name": "Timmy & Paul B",
+      "players": [
+        { "id": "timmy",  "name": "Timmy",  "nickname": "Timmy",  "handicap": 0 },
+        { "id": "paul-b", "name": "Paul B", "nickname": "Paul B", "handicap": 0 }
+      ]
+    },
+    {
+      "id": "big-fred-buddy",
+      "name": "Big Fred & buddy",
+      "tagline": "Partner TBD",
+      "players": [
+        { "id": "big-fred",   "name": "Fred K. Heinle", "nickname": "Big Fred", "handicap": 0 },
+        { "id": "fred-buddy", "name": "TBD",            "nickname": "TBD",      "handicap": 0 }
+      ]
+    },
+    {
+      "id": "kevin-brian",
+      "name": "Kevin & Brian",
+      "players": [
+        { "id": "kevin",  "name": "Kevin",           "nickname": "Kevin", "handicap": 0 },
+        { "id": "bburkk", "name": "Brian Burkhardt", "nickname": "Brian", "handicap": 0 }
+      ]
+    },
+    {
+      "id": "vito-hannigan",
+      "name": "Vito & Hannigan",
+      "players": [
+        { "id": "vito",     "name": "Vito Gigante",  "nickname": "Vito",     "handicap": 0 },
+        { "id": "hannigan", "name": "Mark Hannigan", "nickname": "Hannigan", "handicap": 0 }
+      ]
+    },
+    {
+      "id": "drew-jamie",
+      "name": "Drew & Jamie",
+      "players": [
+        { "id": "drew",  "name": "Drew Sive", "nickname": "Drew",  "handicap": 0 },
+        { "id": "jamie", "name": "Jamie",     "nickname": "Jamie", "handicap": 0 }
+      ]
+    },
+    {
+      "id": "joe-adam",
+      "name": "Joe Czelusta & Adam",
+      "players": [
+        { "id": "joeyso", "name": "Joe Czelusta",   "nickname": "Joeyso", "handicap": 0 },
+        { "id": "datti",  "name": "Adam Burkhardt", "nickname": "Datti",  "handicap": 0 }
+      ]
+    },
+    {
+      "id": "zach-matt",
+      "name": "Zach & Matt",
       "players": [
         { "id": "zach-john", "name": "Zach John", "nickname": "Zach", "handicap": 0 },
         { "id": "matt",      "name": "Matt",      "nickname": "Matt", "handicap": 0 }
-      ]
-    },
-    {
-      "id": "polish-princesses",
-      "name": "Polish Princesses",
-      "tagline": "New this season",
-      "players": [
-        { "id": "joeyso", "name": "Joe Czelusta",  "nickname": "Joeyso", "handicap": 0 },
-        { "id": "bill-schub", "name": "Bill Schubring", "nickname": "Bill", "handicap": 0 }
-      ]
-    },
-    {
-      "id": "squatch-setup",
-      "name": "Squatch & The Setup w/ a Sidecar",
-      "tagline": "3-man team — Brian picks the weekly 2",
-      "players": [
-        { "id": "vito",      "name": "Vito Gigante",   "nickname": "Vito",     "handicap": 0 },
-        { "id": "hannigan",  "name": "Mark Hannigan",  "nickname": "Hannigan", "handicap": 0 },
-        { "id": "stowe",     "name": "Stowe",          "nickname": "Stowe",    "handicap": 0 }
-      ]
-    },
-    {
-      "id": "throuple",
-      "name": "The Throuple",
-      "tagline": "3-man team — Brian picks the weekly 2",
-      "players": [
-        { "id": "datti",   "name": "Adam Burkhardt", "nickname": "Datti",  "handicap": 0 },
-        { "id": "kevin",   "name": "Kevin",          "nickname": "Kevvy",  "handicap": 0 },
-        { "id": "bburkk",  "name": "Brian Burkhardt","nickname": "BBurkk", "handicap": 0 }
-      ]
-    },
-    {
-      "id": "big-fred-jack",
-      "name": "Big Fred & Jack",
-      "tagline": "Nickname TBD",
-      "players": [
-        { "id": "big-fred", "name": "Fred K. Heinle", "nickname": "Big Fred", "handicap": 0 },
-        { "id": "jack-sommer", "name": "Jack Sommer", "nickname": "Jack",    "handicap": 0 }
-      ]
-    },
-    {
-      "id": "drew-buddy",
-      "name": "Drew & Buddy",
-      "tagline": "Partner TBD",
-      "players": [
-        { "id": "drew",       "name": "Drew Sive",      "nickname": "Drew", "handicap": 0 },
-        { "id": "drew-buddy", "name": "TBD",            "nickname": "TBD",  "handicap": 0 }
-      ]
-    },
-    {
-      "id": "wagner-jamie",
-      "name": "Wagner & Jamie",
-      "tagline": "Nickname TBD",
-      "players": [
-        { "id": "wagner", "name": "Andrew Wagner", "nickname": "Wagner", "handicap": 0 },
-        { "id": "jamie",  "name": "Jamie",         "nickname": "Jamie",  "handicap": 0 }
       ]
     }
   ]

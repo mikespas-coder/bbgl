@@ -3,10 +3,11 @@
   "shortName": "BBGL",
   "tagline": "5th Season",
   "course": "Audubon Golf Course",
-  "location": "Buffalo, NY",
+  "location": "Amherst, NY",
   "season": "2026",
   "commissioner": "Brian Burkhardt",
-  "coCommissioner": "Fred K. Heinle",
-  "format": "2-man teams, handicap-based. Each match is worth 5 points: 1 point for match play and 1 point for stroke play in each individual pairing (2 pairings = 4 points), plus 1 point for the lower combined team net score.",
-  "holesPerWeek": 9
+  "format": "2-man teams. Weekly: 9 holes (alternating front/back). Players earn individual points hole-by-hole based on net score (hole-in-one 5, albatross 4, eagle 3, birdie 2, par 1, bogey 0.5, double 0, triple or worse -0.5) plus a +1 show-up bonus. Each team's two individuals' points are summed; higher team total wins 3 team points (split 1.5/1.5, or all 3 to a solo winner). Subs welcome -- they earn individual points and can earn their playing partner's team points.",
+  "holesPerWeek": 9,
+  "leagueFee": 50,
+  "weeklySkinsAndCTP": 5
 }

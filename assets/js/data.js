@@ -3,29 +3,32 @@ const DataStore = {
   league: null,
   teams: null,
   schedule: null,
+  scorecard: null,
   manifest: null,
   scoresByWeek: {}, // week -> data
   recapsByWeek: {}, // week -> data
 
   async loadAll() {
-    const [league, teams, schedule, manifest] = await Promise.all([
+    const [league, teams, schedule, scorecard, manifest] = await Promise.all([
       fetch('data/league.json').then(r => r.json()),
       fetch('data/teams.json').then(r => r.json()),
       fetch('data/schedule.json').then(r => r.json()),
+      fetch('data/scorecard.json').then(r => r.json()),
       fetch('data/manifest.json').then(r => r.json()),
     ]);
     this.league = league;
     this.teams = teams.teams;
     this.schedule = schedule.schedule;
+    this.scorecard = scorecard;
     this.manifest = manifest;
 
     // Load all weekly score files listed in the manifest
-    const scoreLoads = manifest.weeksWithScores.map(w =>
+    const scoreLoads = (manifest.weeksWithScores || []).map(w =>
       fetch(`data/scores/week-${w}.json`)
         .then(r => r.ok ? r.json() : null)
         .then(d => { if (d) this.scoresByWeek[w] = d; })
     );
-    const recapLoads = manifest.weeksWithRecaps.map(w =>
+    const recapLoads = (manifest.weeksWithRecaps || []).map(w =>
       fetch(`data/recaps/week-${w}.json`)
         .then(r => r.ok ? r.json() : null)
         .then(d => { if (d) this.recapsByWeek[w] = d; })

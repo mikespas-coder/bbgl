@@ -1,144 +1,245 @@
-// Scoring engine for the Audubon Friday Night League.
-// Each match between two teams is worth 5 points:
-//   - 1 point per pairing for match play (2 pairings -> 2 points)
-//   - 1 point per pairing for stroke play, decided by lower NET score (2 points)
-//   - 1 point for the lower combined team NET score
-// Ties are split 0.5 / 0.5.
+// Scoring engine for BBGL (2026 format).
+//
+// Each player earns individual points hole-by-hole based on net score vs par:
+//   Hole-in-one (gross = 1): 5
+//   Albatross  (net 3 under par): 4
+//   Eagle      (net 2 under par): 3
+//   Birdie     (net 1 under par): 2
+//   Par        (net even):        1
+//   Bogey      (net 1 over):      0.5
+//   Double     (net 2 over):      0
+//   Triple+    (net 3+ over):     -0.5
+//   Show-up bonus (player participated): +1
+//
+// Team matchup: each team's players' individual points are summed.
+//   Higher total → 3 team points (split 1.5/1.5 if both played, all 3 to a solo winner).
+//   Tied → 1.5 / 1.5.
+//
+// Each player's *individual* season total = sum of hole points + show-up bonus
+// + share of team points for matches they played in.
 
 const Scoring = {
-  net(p) {
-    return p.gross - p.handicap;
+  // 9-hole handicap: half the full handicap, rounded to nearest (0.5 rounds up).
+  ninehcp(fullHandicap) {
+    return Math.round((fullHandicap || 0) / 2);
   },
 
-  scoreMatch(match) {
-    let aPts = 0, bPts = 0;
-    const detail = { pairings: [], teamNetA: 0, teamNetB: 0, teamNetWinner: null };
+  // Returns { holeNumber → strokes received } for the 9 holes played.
+  strokesByHole(fullHandicap, nine, scorecard) {
+    const nh = this.ninehcp(fullHandicap);
+    const startIdx = nine === 'back' ? 9 : 0;
+    const holes = scorecard.holes.slice(startIdx, startIdx + 9);
 
-    for (const p of match.pairings) {
-      const netA = p.playerAGross - p.playerAHandicap;
-      const netB = p.playerBGross - p.playerBHandicap;
-      detail.teamNetA += netA;
-      detail.teamNetB += netB;
+    // Rank the 9 holes from hardest (lowest hcpIndex) to easiest within just this 9.
+    const sorted = [...holes].sort((a, b) => a.hcpIndex - b.hcpIndex);
 
-      // Match play
-      let mp;
-      if (p.matchPlayWinner === p.playerA) { aPts += 1; mp = 'A'; }
-      else if (p.matchPlayWinner === p.playerB) { bPts += 1; mp = 'B'; }
-      else { aPts += 0.5; bPts += 0.5; mp = 'halved'; }
+    // Distribute strokes: floor(nh/9) per hole, plus 1 extra to the lowest-index `nh % 9` holes.
+    const base = Math.floor(nh / 9);
+    const extra = nh % 9;
 
-      // Stroke play (lower net)
-      let sp;
-      if (netA < netB) { aPts += 1; sp = 'A'; }
-      else if (netB < netA) { bPts += 1; sp = 'B'; }
-      else { aPts += 0.5; bPts += 0.5; sp = 'halved'; }
+    const map = {};
+    holes.forEach(h => { map[h.hole] = base; });
+    for (let i = 0; i < extra; i++) {
+      map[sorted[i].hole] += 1;
+    }
+    return map;
+  },
 
-      detail.pairings.push({
-        playerA: p.playerA, playerB: p.playerB,
-        playerAGross: p.playerAGross, playerBGross: p.playerBGross,
-        playerAHandicap: p.playerAHandicap, playerBHandicap: p.playerBHandicap,
-        netA, netB,
-        matchPlay: mp, strokePlay: sp,
-      });
+  // Compute points earned for one player's 9-hole round.
+  // grossScores: array of 9 numbers (or nulls). Index 0 = first hole of the nine played.
+  pointsForRound(grossScores, fullHandicap, nine, scorecard) {
+    const strokes = this.strokesByHole(fullHandicap, nine, scorecard);
+    const startIdx = nine === 'back' ? 9 : 0;
+    const holes = scorecard.holes.slice(startIdx, startIdx + 9);
+
+    let total = 0;
+    const detail = [];
+    let holesPlayed = 0;
+
+    holes.forEach((h, i) => {
+      const gross = grossScores ? grossScores[i] : null;
+      if (gross == null || gross === '' || gross === 0) {
+        detail.push({ hole: h.hole, par: h.par, gross: null, net: null, toPar: null, points: 0 });
+        return;
+      }
+      const g = Number(gross);
+      const s = strokes[h.hole] || 0;
+      const net = g - s;
+      const toPar = net - h.par;
+
+      let pts;
+      if (g === 1) pts = 5;            // Hole-in-one (always)
+      else if (toPar <= -3) pts = 4;   // Albatross (or better, net)
+      else if (toPar === -2) pts = 3;  // Eagle
+      else if (toPar === -1) pts = 2;  // Birdie
+      else if (toPar === 0) pts = 1;   // Par
+      else if (toPar === 1) pts = 0.5; // Bogey
+      else if (toPar === 2) pts = 0;   // Double bogey
+      else pts = -0.5;                  // Triple or worse
+
+      detail.push({ hole: h.hole, par: h.par, gross: g, strokes: s, net, toPar, points: pts });
+      total += pts;
+      holesPlayed += 1;
+    });
+
+    return { holePoints: detail, total, holesPlayed };
+  },
+
+  // Score one match.
+  // match: {
+  //   teamA, teamB, nine,
+  //   participants: [{ teamId, playerId, isSub, subName, handicap, holes }]
+  // }
+  scoreMatch(match, scorecard) {
+    const nine = match.nine || 'front';
+
+    const results = (match.participants || []).map(p => {
+      const r = this.pointsForRound(p.holes, p.handicap, nine, scorecard);
+      const showed = r.holesPlayed > 0;
+      return {
+        teamId: p.teamId,
+        playerId: p.playerId,
+        isSub: !!p.isSub,
+        subName: p.subName || null,
+        handicap: p.handicap,
+        holes: p.holes,
+        holePoints: r.holePoints,
+        rawPoints: r.total,
+        showupBonus: showed ? 1 : 0,
+        individualPoints: showed ? r.total + 1 : 0,
+        holesPlayed: r.holesPlayed,
+      };
+    });
+
+    const aPlayers = results.filter(r => r.teamId === match.teamA);
+    const bPlayers = results.filter(r => r.teamId === match.teamB);
+    const aActive = aPlayers.filter(r => r.holesPlayed > 0);
+    const bActive = bPlayers.filter(r => r.holesPlayed > 0);
+
+    const teamATotal = aActive.reduce((s, r) => s + r.individualPoints, 0);
+    const teamBTotal = bActive.reduce((s, r) => s + r.individualPoints, 0);
+
+    let teamAPoints = 0, teamBPoints = 0, outcome = 'tie';
+    if (aActive.length === 0 && bActive.length === 0) {
+      // Nobody showed: no team points awarded.
+    } else if (aActive.length === 0) {
+      teamBPoints = 3; outcome = 'B-forfeit-win';
+    } else if (bActive.length === 0) {
+      teamAPoints = 3; outcome = 'A-forfeit-win';
+    } else if (teamATotal > teamBTotal) {
+      teamAPoints = 3; outcome = 'A';
+    } else if (teamBTotal > teamATotal) {
+      teamBPoints = 3; outcome = 'B';
+    } else {
+      teamAPoints = 1.5; teamBPoints = 1.5; outcome = 'tie';
     }
 
-    // Team cumulative net
-    if (detail.teamNetA < detail.teamNetB) { aPts += 1; detail.teamNetWinner = 'A'; }
-    else if (detail.teamNetB < detail.teamNetA) { bPts += 1; detail.teamNetWinner = 'B'; }
-    else { aPts += 0.5; bPts += 0.5; detail.teamNetWinner = 'halved'; }
+    // Distribute team points equally among the players who played.
+    if (aActive.length > 0) {
+      const share = teamAPoints / aActive.length;
+      aActive.forEach(r => { r.teamPointsShare = share; });
+    }
+    aPlayers.filter(r => r.holesPlayed === 0).forEach(r => { r.teamPointsShare = 0; });
+    if (bActive.length > 0) {
+      const share = teamBPoints / bActive.length;
+      bActive.forEach(r => { r.teamPointsShare = share; });
+    }
+    bPlayers.filter(r => r.holesPlayed === 0).forEach(r => { r.teamPointsShare = 0; });
 
     return {
-      teamA: match.teamA,
-      teamB: match.teamB,
-      pointsA: aPts,
-      pointsB: bPts,
-      detail,
+      teamA: match.teamA, teamB: match.teamB, nine,
+      teamATotal, teamBTotal,
+      teamAPoints, teamBPoints, outcome,
+      playerResults: results,
     };
   },
 
-  // Returns { weeks: { weekN: { matches: [scoredMatches] } }, standings: [{ teamId, points, matches, ... }] }
-  computeSeason(teams, scoresByWeek) {
-    const standings = {};
+  // Compute the season's team and individual standings.
+  computeSeason(teams, scoresByWeek, scorecard) {
+    const teamStandings = {};
+    const playerStandings = {};
+
     teams.forEach(t => {
-      standings[t.id] = {
+      teamStandings[t.id] = {
         teamId: t.id, teamName: t.name,
-        points: 0, wins: 0, losses: 0, halves: 0,
+        teamPoints: 0,
+        wins: 0, losses: 0, ties: 0,
         matchesPlayed: 0,
       };
-    });
-
-    const weeks = {};
-    Object.keys(scoresByWeek).map(Number).sort((a,b)=>a-b).forEach(w => {
-      const wk = scoresByWeek[w];
-      const scoredMatches = wk.matches.map(m => this.scoreMatch(m));
-      weeks[w] = { week: w, date: wk.date, matches: scoredMatches };
-
-      scoredMatches.forEach(sm => {
-        standings[sm.teamA].points += sm.pointsA;
-        standings[sm.teamB].points += sm.pointsB;
-        standings[sm.teamA].matchesPlayed += 1;
-        standings[sm.teamB].matchesPlayed += 1;
-        if (sm.pointsA > sm.pointsB) {
-          standings[sm.teamA].wins += 1;
-          standings[sm.teamB].losses += 1;
-        } else if (sm.pointsB > sm.pointsA) {
-          standings[sm.teamB].wins += 1;
-          standings[sm.teamA].losses += 1;
-        } else {
-          standings[sm.teamA].halves += 1;
-          standings[sm.teamB].halves += 1;
-        }
+      t.players.forEach(p => {
+        playerStandings[p.id] = this.makePlayerStanding(p.id, p.name, t.id, t.name, false);
       });
     });
 
-    const standingsList = Object.values(standings).sort((a,b) => b.points - a.points);
-    return { weeks, standings: standingsList };
-  },
+    const weeks = {};
+    const weekNums = Object.keys(scoresByWeek).map(Number).sort((a, b) => a - b);
 
-  // Per-player stats across the season.
-  computePlayerStats(teams, scoresByWeek) {
-    const stats = {};
-    teams.forEach(t => t.players.forEach(p => {
-      stats[p.id] = {
-        playerId: p.id, name: p.name, teamId: t.id, teamName: t.name,
-        rounds: 0, totalGross: 0, totalNet: 0,
-        lowGross: null, lowNet: null,
-        matchPlayWins: 0, matchPlayHalves: 0, matchPlayLosses: 0,
-        strokePlayWins: 0, strokePlayHalves: 0, strokePlayLosses: 0,
-      };
-    }));
-
-    Object.keys(scoresByWeek).map(Number).sort((a,b)=>a-b).forEach(w => {
+    weekNums.forEach(w => {
       const wk = scoresByWeek[w];
-      wk.matches.forEach(m => {
-        m.pairings.forEach(p => {
-          const sA = stats[p.playerA], sB = stats[p.playerB];
-          if (!sA || !sB) return;
-          const netA = p.playerAGross - p.playerAHandicap;
-          const netB = p.playerBGross - p.playerBHandicap;
+      const matches = wk.matches.map(m => this.scoreMatch({ ...m, nine: wk.nine || m.nine }, scorecard));
+      weeks[w] = { week: w, date: wk.date, nine: wk.nine, matches };
 
-          [sA, sB].forEach((s, i) => {
-            const gross = i === 0 ? p.playerAGross : p.playerBGross;
-            const net   = i === 0 ? netA : netB;
-            s.rounds += 1;
-            s.totalGross += gross;
-            s.totalNet += net;
-            s.lowGross = (s.lowGross == null) ? gross : Math.min(s.lowGross, gross);
-            s.lowNet   = (s.lowNet   == null) ? net   : Math.min(s.lowNet,   net);
+      matches.forEach(sm => {
+        const tA = teamStandings[sm.teamA];
+        const tB = teamStandings[sm.teamB];
+        if (tA) {
+          tA.teamPoints += sm.teamAPoints;
+          tA.matchesPlayed += 1;
+        }
+        if (tB) {
+          tB.teamPoints += sm.teamBPoints;
+          tB.matchesPlayed += 1;
+        }
+        if (sm.teamAPoints > sm.teamBPoints) {
+          if (tA) tA.wins += 1;
+          if (tB) tB.losses += 1;
+        } else if (sm.teamBPoints > sm.teamAPoints) {
+          if (tB) tB.wins += 1;
+          if (tA) tA.losses += 1;
+        } else if (sm.teamAPoints > 0 || sm.teamBPoints > 0) {
+          if (tA) tA.ties += 1;
+          if (tB) tB.ties += 1;
+        }
+
+        sm.playerResults.forEach(pr => {
+          let p = playerStandings[pr.playerId];
+          if (!p) {
+            const displayName = pr.subName || pr.playerId;
+            p = playerStandings[pr.playerId] = this.makePlayerStanding(
+              pr.playerId, displayName, null, 'Sub', true
+            );
+          }
+          if (pr.holesPlayed === 0) return;
+          p.weeksPlayed += 1;
+          p.holePoints += pr.rawPoints;
+          p.showupBonus += pr.showupBonus;
+          p.teamPointsShare += pr.teamPointsShare || 0;
+          p.totalPoints = +(p.holePoints + p.showupBonus + p.teamPointsShare).toFixed(2);
+
+          pr.holePoints.forEach(hp => {
+            if (hp.gross === 1) p.holeInOnes += 1;
+            if (hp.toPar === -2) p.eagles += 1;
+            else if (hp.toPar === -1) p.birdies += 1;
+            else if (hp.toPar === 0) p.pars += 1;
+            else if (hp.toPar === 1) p.bogeys += 1;
           });
-
-          // Match play
-          if (p.matchPlayWinner === p.playerA) { sA.matchPlayWins++; sB.matchPlayLosses++; }
-          else if (p.matchPlayWinner === p.playerB) { sB.matchPlayWins++; sA.matchPlayLosses++; }
-          else { sA.matchPlayHalves++; sB.matchPlayHalves++; }
-
-          // Stroke play
-          if (netA < netB) { sA.strokePlayWins++; sB.strokePlayLosses++; }
-          else if (netB < netA) { sB.strokePlayWins++; sA.strokePlayLosses++; }
-          else { sA.strokePlayHalves++; sB.strokePlayHalves++; }
         });
       });
     });
 
-    return Object.values(stats);
+    return {
+      weeks,
+      teamStandings: Object.values(teamStandings).sort((a, b) => b.teamPoints - a.teamPoints),
+      playerStandings: Object.values(playerStandings).sort((a, b) => b.totalPoints - a.totalPoints),
+    };
+  },
+
+  makePlayerStanding(id, name, teamId, teamName, isSub) {
+    return {
+      playerId: id, name, teamId, teamName, isSub,
+      weeksPlayed: 0,
+      holePoints: 0, showupBonus: 0, teamPointsShare: 0, totalPoints: 0,
+      holeInOnes: 0, eagles: 0, birdies: 0, pars: 0, bogeys: 0,
+    };
   },
 };

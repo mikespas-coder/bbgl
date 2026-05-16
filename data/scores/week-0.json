@@ -13,9 +13,9 @@
     { "teamId": "cole-matt",      "playerId": "cole",     "isSub": false, "handicap": 0, "gross": 59 },
     { "teamId": "golfin-guidos",  "playerId": "ckheinle", "isSub": false, "handicap": 0, "gross": 48 },
     { "teamId": "golfin-guidos",  "playerId": "spas",     "isSub": false, "handicap": 0, "gross": 50 },
-    { "teamId": "big-fred-buddy", "playerId": "big-fred", "isSub": false, "handicap": 0, "gross": 58 },
-    { "teamId": "drew-jamie",     "playerId": "drew",     "isSub": false, "handicap": 0, "gross": 39 },
-    { "teamId": "drew-jamie",     "playerId": "jamie",    "isSub": false, "handicap": 0, "gross": 48 },
+    { "teamId": "bt-boys", "playerId": "big-fred", "isSub": false, "handicap": 0, "gross": 58 },
+    { "teamId": "birdie-hunters",     "playerId": "drew",     "isSub": false, "handicap": 0, "gross": 39 },
+    { "teamId": "birdie-hunters",     "playerId": "jamie",    "isSub": false, "handicap": 0, "gross": 48 },
     { "teamId": "vito-hannigan",  "playerId": "vito",     "isSub": false, "handicap": 0, "gross": 61 },
     { "teamId": "vito-hannigan",  "playerId": "hannigan", "isSub": false, "handicap": 0, "gross": 58 }
   ]

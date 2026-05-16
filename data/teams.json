@@ -19,9 +19,9 @@
       ]
     },
     {
-      "id": "big-fred-buddy",
-      "name": "Big Fred & buddy",
-      "tagline": "Partner TBD",
+      "id": "bt-boys",
+      "name": "BT Boys",
+      "tagline": "Fred's partner still TBD",
       "players": [
         { "id": "big-fred",   "name": "Fred K. Heinle", "nickname": "Big Fred", "handicap": 0 },
         { "id": "fred-buddy", "name": "TBD",            "nickname": "TBD",      "handicap": 0 }
@@ -44,8 +44,8 @@
       ]
     },
     {
-      "id": "drew-jamie",
-      "name": "Drew & Jamie",
+      "id": "birdie-hunters",
+      "name": "Birdie Hunters",
       "players": [
         { "id": "drew",  "name": "Drew Sive", "nickname": "Drew",  "handicap": 0 },
         { "id": "jamie", "name": "Jamie",     "nickname": "Jamie", "handicap": 0 }

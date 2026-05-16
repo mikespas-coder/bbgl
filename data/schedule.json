@@ -12,11 +12,11 @@
         },
         {
           "teamA": "cole-matt",
-          "teamB": "drew-jamie"
+          "teamB": "birdie-hunters"
         },
         {
           "teamA": "joe-adam",
-          "teamB": "big-fred-buddy"
+          "teamB": "bt-boys"
         },
         {
           "teamA": "vito-hannigan",
@@ -31,11 +31,11 @@
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "drew-jamie"
+          "teamB": "birdie-hunters"
         },
         {
           "teamA": "timmy-paul",
-          "teamB": "big-fred-buddy"
+          "teamB": "bt-boys"
         },
         {
           "teamA": "cole-matt",
@@ -54,10 +54,10 @@
       "matches": [
         {
           "teamA": "golfin-guidos",
-          "teamB": "big-fred-buddy"
+          "teamB": "bt-boys"
         },
         {
-          "teamA": "drew-jamie",
+          "teamA": "birdie-hunters",
           "teamB": "kevin-brian"
         },
         {
@@ -80,11 +80,11 @@
           "teamB": "kevin-brian"
         },
         {
-          "teamA": "big-fred-buddy",
+          "teamA": "bt-boys",
           "teamB": "vito-hannigan"
         },
         {
-          "teamA": "drew-jamie",
+          "teamA": "birdie-hunters",
           "teamB": "joe-adam"
         },
         {
@@ -107,11 +107,11 @@
           "teamB": "joe-adam"
         },
         {
-          "teamA": "big-fred-buddy",
+          "teamA": "bt-boys",
           "teamB": "cole-matt"
         },
         {
-          "teamA": "drew-jamie",
+          "teamA": "birdie-hunters",
           "teamB": "timmy-paul"
         }
       ]
@@ -134,8 +134,8 @@
           "teamB": "timmy-paul"
         },
         {
-          "teamA": "big-fred-buddy",
-          "teamB": "drew-jamie"
+          "teamA": "bt-boys",
+          "teamB": "birdie-hunters"
         }
       ]
     },
@@ -154,11 +154,11 @@
         },
         {
           "teamA": "vito-hannigan",
-          "teamB": "drew-jamie"
+          "teamB": "birdie-hunters"
         },
         {
           "teamA": "kevin-brian",
-          "teamB": "big-fred-buddy"
+          "teamB": "bt-boys"
         }
       ]
     },
@@ -172,11 +172,11 @@
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "drew-jamie",
+          "teamA": "birdie-hunters",
           "teamB": "cole-matt"
         },
         {
-          "teamA": "big-fred-buddy",
+          "teamA": "bt-boys",
           "teamB": "joe-adam"
         },
         {
@@ -191,11 +191,11 @@
       "nine": "front",
       "matches": [
         {
-          "teamA": "drew-jamie",
+          "teamA": "birdie-hunters",
           "teamB": "golfin-guidos"
         },
         {
-          "teamA": "big-fred-buddy",
+          "teamA": "bt-boys",
           "teamB": "timmy-paul"
         },
         {
@@ -214,12 +214,12 @@
       "nine": "back",
       "matches": [
         {
-          "teamA": "big-fred-buddy",
+          "teamA": "bt-boys",
           "teamB": "golfin-guidos"
         },
         {
           "teamA": "kevin-brian",
-          "teamB": "drew-jamie"
+          "teamB": "birdie-hunters"
         },
         {
           "teamA": "vito-hannigan",
@@ -242,11 +242,11 @@
         },
         {
           "teamA": "vito-hannigan",
-          "teamB": "big-fred-buddy"
+          "teamB": "bt-boys"
         },
         {
           "teamA": "joe-adam",
-          "teamB": "drew-jamie"
+          "teamB": "birdie-hunters"
         },
         {
           "teamA": "cole-matt",
@@ -269,11 +269,11 @@
         },
         {
           "teamA": "cole-matt",
-          "teamB": "big-fred-buddy"
+          "teamB": "bt-boys"
         },
         {
           "teamA": "timmy-paul",
-          "teamB": "drew-jamie"
+          "teamB": "birdie-hunters"
         }
       ]
     },
@@ -295,8 +295,8 @@
           "teamB": "kevin-brian"
         },
         {
-          "teamA": "drew-jamie",
-          "teamB": "big-fred-buddy"
+          "teamA": "birdie-hunters",
+          "teamB": "bt-boys"
         }
       ]
     },
@@ -314,11 +314,11 @@
           "teamB": "joe-adam"
         },
         {
-          "teamA": "drew-jamie",
+          "teamA": "birdie-hunters",
           "teamB": "vito-hannigan"
         },
         {
-          "teamA": "big-fred-buddy",
+          "teamA": "bt-boys",
           "teamB": "kevin-brian"
         }
       ]

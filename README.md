@@ -23,7 +23,14 @@ Brian rewrote the league format on 5/14/2026 to simplify admin and accommodate s
 - Triple or worse: **-0.5**
 - Show-up bonus (per player who participated): **+1**
 
-Each player's handicap stored in `teams.json` is a **9-hole handicap** (BBGL only plays 9 each week — no separate 18-hole handicap is tracked). Strokes are allocated to the lowest-indexed holes within the 9 played. If a 9-hole handicap exceeds 9, the player gets at least one stroke on every hole plus extras on the hardest.
+Each player's 9-hole handicap is **computed live** from their round history:
+- **Formula**: rolling average of (gross − 9-hole par) across every round they've played, rounded to the nearest whole number. Floor 0, ceiling 18.
+- **Inputs**: includes the 5/15 handicap-setting round (week 0, doesn't count for standings) plus every regular-season round.
+- Strokes are allocated to the lowest-indexed holes within the 9 played. If a 9-hole handicap exceeds 9, the player gets at least one stroke on every hole plus extras on the hardest.
+
+The score-entry form pre-fills each player's handicap from this rolling average — Brian can override per row if needed. Each week's handicap that was used at scoring time is preserved in `data/scores/week-N.json`, so historical weeks don't shift when new scores come in.
+
+The `handicap` field in `teams.json` is only a fallback for players with zero rounds played.
 
 ### Team matchup
 - Each team's two individual point totals are summed.

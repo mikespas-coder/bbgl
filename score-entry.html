@@ -183,10 +183,18 @@
           const nine = ninePicker.value;
           const holes = holeHeadersFor(nine);
 
+          // Live handicap = rolling avg of rounds BEFORE this week, fallback to teams.json
+          // if there's no history yet.
+          function liveHcp(playerId, fallback) {
+            const computed = Scoring.computeHandicap(playerId, DataStore.scoresByWeek, DataStore.scorecard, w);
+            const rounds = Scoring.collectPlayerRounds(playerId, DataStore.scoresByWeek, DataStore.scorecard, w).length;
+            return rounds > 0 ? computed : (fallback != null ? fallback : 0);
+          }
+
           const headerRow = `
             <tr class="bg-stone-100 text-xs text-stone-600">
               <th class="px-2 py-2 text-left">Player</th>
-              <th class="px-2 py-2 text-center" title="9-hole handicap">9h HCP</th>
+              <th class="px-2 py-2 text-center" title="9-hole handicap (auto from rolling avg of past rounds, override if needed)">9h HCP</th>
               ${holes.map(h => `<th class="px-1 py-2 text-center">${h.hole}</th>`).join('')}
               <th class="px-2 py-2 text-right">Pts</th>
               <th class="px-1 py-2"></th>
@@ -203,14 +211,16 @@
 
             const aRows = tA.players.map(p => {
               const ex = partsA.find(x => x.playerId === p.id && !x.isSub);
-              return playerRow(`a-${p.id}`, m.teamA, p, holes, ex ? ex.handicap : p.handicap, ex ? ex.holes : null, false, null);
+              const hcp = ex ? ex.handicap : liveHcp(p.id, p.handicap);
+              return playerRow(`a-${p.id}`, m.teamA, p, holes, hcp, ex ? ex.holes : null, false, null);
             }).join('') + partsA.filter(x => x.isSub).map((sub, si) =>
               playerRow(`a-sub-${si}`, m.teamA, { id: sub.playerId }, holes, sub.handicap, sub.holes, true, sub.subName)
             ).join('');
 
             const bRows = tB.players.map(p => {
               const ex = partsB.find(x => x.playerId === p.id && !x.isSub);
-              return playerRow(`b-${p.id}`, m.teamB, p, holes, ex ? ex.handicap : p.handicap, ex ? ex.holes : null, false, null);
+              const hcp = ex ? ex.handicap : liveHcp(p.id, p.handicap);
+              return playerRow(`b-${p.id}`, m.teamB, p, holes, hcp, ex ? ex.holes : null, false, null);
             }).join('') + partsB.filter(x => x.isSub).map((sub, si) =>
               playerRow(`b-sub-${si}`, m.teamB, { id: sub.playerId }, holes, sub.handicap, sub.holes, true, sub.subName)
             ).join('');

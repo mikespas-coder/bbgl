@@ -178,8 +178,11 @@ const Scoring = {
 
     weekNums.forEach(w => {
       const wk = scoresByWeek[w];
-      const matches = wk.matches.map(m => this.scoreMatch({ ...m, nine: wk.nine || m.nine }, scorecard));
-      weeks[w] = { week: w, date: wk.date, nine: wk.nine, matches };
+      const noStandings = wk.noStandings === true;
+      const matches = (wk.matches || []).map(m => this.scoreMatch({ ...m, nine: wk.nine || m.nine }, scorecard));
+      weeks[w] = { week: w, date: wk.date, nine: wk.nine, noStandings, matches };
+
+      if (noStandings) return; // week 0 (handicap round) and similar: no standings updates
 
       matches.forEach(sm => {
         const tA = teamStandings[sm.teamA];
@@ -243,5 +246,70 @@ const Scoring = {
       holePoints: 0, showupBonus: 0, teamPointsShare: 0, totalPoints: 0,
       holeInOnes: 0, eagles: 0, birdies: 0, pars: 0, bogeys: 0,
     };
+  },
+
+  // Collect all the FULL 9-hole rounds a player has played so far.
+  // Looks both inside matches[].participants and at the top-level participants
+  // array (used by the 5/15 handicap-setting round which has no matchups).
+  // If `beforeWeek` is provided, only rounds from weeks strictly less than it are returned.
+  collectPlayerRounds(playerId, scoresByWeek, scorecard, beforeWeek) {
+    const rounds = [];
+    Object.keys(scoresByWeek).map(Number).sort((a, b) => a - b).forEach(w => {
+      if (beforeWeek != null && w >= beforeWeek) return;
+      const wk = scoresByWeek[w];
+      const par = wk.nine === 'back' ? scorecard.backPar : scorecard.frontPar;
+
+      const pushIfFull = (p) => {
+        if (p.playerId !== playerId || !p.holes) return;
+        const validScores = p.holes.filter(h => h != null && h > 0);
+        if (validScores.length !== 9) return; // only count full rounds
+        const gross = validScores.reduce((s, h) => s + h, 0);
+        rounds.push({ week: w, gross, par, diff: gross - par });
+      };
+
+      (wk.matches || []).forEach(m => (m.participants || []).forEach(pushIfFull));
+      (wk.participants || []).forEach(pushIfFull);
+    });
+    return rounds;
+  },
+
+  // Compute a player's 9-hole handicap going INTO `forWeek`.
+  // Method: rolling average of (gross - par) across all prior rounds. Rounded to
+  // the nearest whole number. Floor 0, ceiling 18. Returns 0 if no rounds yet.
+  computeHandicap(playerId, scoresByWeek, scorecard, forWeek) {
+    const rounds = this.collectPlayerRounds(playerId, scoresByWeek, scorecard, forWeek);
+    if (rounds.length === 0) return 0;
+    const sumDiff = rounds.reduce((s, r) => s + Math.max(0, r.diff), 0);
+    const avg = sumDiff / rounds.length;
+    return Math.max(0, Math.min(18, Math.round(avg)));
+  },
+
+  // Convenience: compute current handicap for every roster player + sub
+  // ever seen. Returns { playerId: { name, current, roundsPlayed } }.
+  computeAllHandicaps(teams, scoresByWeek, scorecard, forWeek) {
+    const out = {};
+    const seen = new Set();
+    teams.forEach(t => t.players.forEach(p => {
+      seen.add(p.id);
+      out[p.id] = {
+        playerId: p.id, name: p.name, teamId: t.id, teamName: t.name, isSub: false,
+        roundsPlayed: this.collectPlayerRounds(p.id, scoresByWeek, scorecard, forWeek).length,
+        current: this.computeHandicap(p.id, scoresByWeek, scorecard, forWeek),
+      };
+    }));
+    // Subs - infer from score data
+    Object.values(scoresByWeek).forEach(wk => {
+      const all = [].concat(wk.participants || [], ...(wk.matches || []).map(m => m.participants || []));
+      all.forEach(p => {
+        if (seen.has(p.playerId)) return;
+        seen.add(p.playerId);
+        out[p.playerId] = {
+          playerId: p.playerId, name: p.subName || p.playerId, teamId: null, teamName: 'Sub', isSub: true,
+          roundsPlayed: this.collectPlayerRounds(p.playerId, scoresByWeek, scorecard, forWeek).length,
+          current: this.computeHandicap(p.playerId, scoresByWeek, scorecard, forWeek),
+        };
+      });
+    });
+    return out;
   },
 };

@@ -159,4 +159,75 @@ const tieRes = Scoring.scoreMatch(tieMatch, scorecard);
 assertEq(tieRes.teamAPoints, 1.5, 'Tie awards 1.5');
 assertEq(tieRes.teamBPoints, 1.5, 'Tie awards 1.5');
 
+// --- Test 9: computeHandicap from a single back-9 handicap round ---
+// Spas plays the 5/15 setting round on back 9. Shoots 47. Back par = 36. Diff = 11.
+// One round → handicap = round(11) = 11.
+const scoresWithSetting = {
+  0: {
+    week: 0, date: '2026-05-15', nine: 'back', noStandings: true,
+    matches: [],
+    participants: [
+      { teamId: 'golfin-guidos', playerId: 'spas', handicap: 0, holes: [5,5,6,5,5,4,5,5,7] }, // 47
+    ],
+  },
+};
+assertEq(Scoring.computeHandicap('spas', scoresWithSetting, scorecard, 1), 11, 'Handicap from single back-9 round');
+
+// --- Test 10: rolling average across multiple rounds ---
+// Add week 1: Spas shoots 45 on front 9 (par 35), diff = 10.
+// Avg = (11 + 10) / 2 = 10.5 → round → 11. Wait, rounds to 11 (half rounds up in JS).
+const scoresMultiple = {
+  ...scoresWithSetting,
+  1: {
+    week: 1, date: '2026-05-22', nine: 'front',
+    matches: [
+      { teamA: 'golfin-guidos', teamB: 'zach-matt',
+        participants: [
+          { teamId: 'golfin-guidos', playerId: 'spas', handicap: 11, holes: [5,5,4,5,5,4,5,6,6] }, // 45
+        ] }
+    ],
+  },
+};
+assertEq(Scoring.computeHandicap('spas', scoresMultiple, scorecard, 2), 11, 'Rolling avg of 2 rounds (10.5 → 11)');
+
+// --- Test 11: handicap going INTO week 1 still only uses week 0 ---
+assertEq(Scoring.computeHandicap('spas', scoresMultiple, scorecard, 1), 11, 'Pre-week-1 handicap = setting round only');
+
+// --- Test 12: ceiling at 18 ---
+const blowoutScores = {
+  0: {
+    week: 0, date: '2026-05-15', nine: 'back', noStandings: true,
+    matches: [],
+    participants: [
+      { teamId: 'kevin-brian', playerId: 'kevin', handicap: 0, holes: [10,8,8,9,8,6,8,9,9] }, // 75, diff 39
+    ],
+  },
+};
+assertEq(Scoring.computeHandicap('kevin', blowoutScores, scorecard, 1), 18, 'Handicap caps at 18');
+
+// --- Test 13: floor at 0 ---
+const aceScores = {
+  0: {
+    week: 0, date: '2026-05-15', nine: 'back', noStandings: true,
+    matches: [],
+    participants: [
+      { teamId: 'golfin-guidos', playerId: 'ckheinle', handicap: 0, holes: [4,4,5,4,4,3,4,4,3] }, // 35, diff -1
+    ],
+  },
+};
+assertEq(Scoring.computeHandicap('ckheinle', aceScores, scorecard, 1), 0, 'Handicap floors at 0 (under par round)');
+
+// --- Test 14: no rounds yet → handicap 0 ---
+assertEq(Scoring.computeHandicap('mystery-player', {}, scorecard, 1), 0, 'No rounds = handicap 0');
+
+// --- Test 15: noStandings week does not update team standings ---
+const teams = [
+  { id: 'golfin-guidos', name: 'Guidos', players: [{ id: 'spas', name: 'Spas', handicap: 0 }, { id: 'ckheinle', name: 'CK', handicap: 0 }] },
+  { id: 'zach-matt', name: 'Zach & Matt', players: [{ id: 'zach-john', name: 'Zach', handicap: 0 }, { id: 'matt', name: 'Matt', handicap: 0 }] },
+];
+const seasonRes = Scoring.computeSeason(teams, scoresWithSetting, scorecard);
+const guidos = seasonRes.teamStandings.find(t => t.teamId === 'golfin-guidos');
+assertEq(guidos.matchesPlayed, 0, 'Setting round does not increment matches played');
+assertEq(guidos.teamPoints, 0, 'Setting round does not award team points');
+
 console.log('\nAll tests:', process.exitCode === 1 ? 'SOME FAILED' : 'PASSED');

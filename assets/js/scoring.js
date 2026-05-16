@@ -11,6 +11,11 @@
 //   Triple+    (net 3+ over):     -0.5
 //   Show-up bonus (player participated): +1
 //
+// Handicap stored in teams.json is the player's 9-HOLE handicap (BBGL only
+// plays 9 each week). Strokes are allocated to the lowest-indexed holes within
+// the 9 played; players with 9-hole handicap > 9 get base strokes on every
+// hole plus extras on the hardest ones.
+//
 // Team matchup: each team's players' individual points are summed.
 //   Higher total → 3 team points (split 1.5/1.5 if both played, all 3 to a solo winner).
 //   Tied → 1.5 / 1.5.
@@ -19,14 +24,10 @@
 // + share of team points for matches they played in.
 
 const Scoring = {
-  // 9-hole handicap: half the full handicap, rounded to nearest (0.5 rounds up).
-  ninehcp(fullHandicap) {
-    return Math.round((fullHandicap || 0) / 2);
-  },
-
   // Returns { holeNumber → strokes received } for the 9 holes played.
-  strokesByHole(fullHandicap, nine, scorecard) {
-    const nh = this.ninehcp(fullHandicap);
+  // `handicap` is the player's 9-hole handicap (BBGL doesn't use 18-hole handicaps).
+  strokesByHole(handicap, nine, scorecard) {
+    const nh = Math.max(0, handicap || 0);
     const startIdx = nine === 'back' ? 9 : 0;
     const holes = scorecard.holes.slice(startIdx, startIdx + 9);
 
@@ -47,8 +48,9 @@ const Scoring = {
 
   // Compute points earned for one player's 9-hole round.
   // grossScores: array of 9 numbers (or nulls). Index 0 = first hole of the nine played.
-  pointsForRound(grossScores, fullHandicap, nine, scorecard) {
-    const strokes = this.strokesByHole(fullHandicap, nine, scorecard);
+  // handicap: 9-hole handicap.
+  pointsForRound(grossScores, handicap, nine, scorecard) {
+    const strokes = this.strokesByHole(handicap, nine, scorecard);
     const startIdx = nine === 'back' ? 9 : 0;
     const holes = scorecard.holes.slice(startIdx, startIdx + 9);
 

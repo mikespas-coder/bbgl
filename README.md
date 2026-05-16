@@ -23,7 +23,7 @@ Brian rewrote the league format on 5/14/2026 to simplify admin and accommodate s
 - Triple or worse: **-0.5**
 - Show-up bonus (per player who participated): **+1**
 
-Net score uses each player's strokes received on that hole based on the Audubon scorecard's handicap stroke indexes. 9-hole handicap = round(full handicap / 2), strokes allocated to the lowest-indexed holes in the 9 being played.
+Each player's handicap stored in `teams.json` is a **9-hole handicap** (BBGL only plays 9 each week — no separate 18-hole handicap is tracked). Strokes are allocated to the lowest-indexed holes within the 9 played. If a 9-hole handicap exceeds 9, the player gets at least one stroke on every hole plus extras on the hardest.
 
 ### Team matchup
 - Each team's two individual point totals are summed.
@@ -84,7 +84,7 @@ After Friday's round:
 
 1. Open `score-entry.html` in a browser (locally or on the live site).
 2. Pick the week. The "nine" field defaults from the schedule; override if needed.
-3. For each match, enter the 9 hole scores per player + their full 18-hole handicap. The per-row points preview as you type.
+3. For each match, enter the 9 hole scores per player + their 9-hole handicap. The per-row points preview as you type.
 4. Add subs with "+ Add sub" if anyone played as a fill-in. Clear a regular player's row with the x button if they didn't play.
 5. Click "Generate JSON & Preview". Confirm point totals look right.
 6. Click "Copy JSON".

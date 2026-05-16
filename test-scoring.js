@@ -20,21 +20,21 @@ function assertEq(actual, expected, label) {
   if (!ok) process.exitCode = 1;
 }
 
-// --- Test 1: strokesByHole for a 6-handicap on the front 9 ---
-// 9-hole handicap = round(6/2) = 3.
+// NOTE: As of 2026, all handicaps are 9-hole handicaps directly (no halving).
+
+// --- Test 1: strokesByHole for a 3-handicap (9-hole) on the front 9 ---
 // Front-9 hcp indexes per hole: 1->11, 2->3, 3->13, 4->5, 5->1, 6->9, 7->7, 8->15, 9->17.
 // Sorted by index ascending within front 9: hole 5 (idx 1), hole 2 (idx 3), hole 4 (idx 5), hole 7 (idx 7), hole 6 (idx 9), hole 1 (idx 11), hole 3 (idx 13), hole 8 (idx 15), hole 9 (idx 17).
 // 3 strokes → distributed to holes 5, 2, 4.
-const s6front = Scoring.strokesByHole(6, 'front', scorecard);
-assertEq(s6front, { 1: 0, 2: 1, 3: 0, 4: 1, 5: 1, 6: 0, 7: 0, 8: 0, 9: 0 }, '6-HCP front 9 strokes');
+const s3front = Scoring.strokesByHole(3, 'front', scorecard);
+assertEq(s3front, { 1: 0, 2: 1, 3: 0, 4: 1, 5: 1, 6: 0, 7: 0, 8: 0, 9: 0 }, '3-HCP (9h) front 9 strokes');
 
-// --- Test 2: 20-handicap on the back 9 (gets 10 strokes — wraps around) ---
-// 9-hole hcp = round(20/2) = 10.
+// --- Test 2: 10-handicap on the back 9 (gets 10 strokes — wraps around) ---
 // Base = floor(10/9) = 1 per hole, plus 1 extra to lowest-index 1 hole.
 // Back-9 indexes: 10->2, 11->18, 12->12, 13->8, 14->6, 15->16, 16->14, 17->4, 18->10.
 // Lowest index on back = hole 10 (idx 2) → gets 2 strokes; others get 1.
-const s20back = Scoring.strokesByHole(20, 'back', scorecard);
-assertEq(s20back, { 10: 2, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1 }, '20-HCP back 9 strokes');
+const s10back = Scoring.strokesByHole(10, 'back', scorecard);
+assertEq(s10back, { 10: 2, 11: 1, 12: 1, 13: 1, 14: 1, 15: 1, 16: 1, 17: 1, 18: 1 }, '10-HCP (9h) back 9 strokes');
 
 // --- Test 3: per-hole points for a clean scorecard ---
 // Scratch player (HCP 0) on front 9. Pars: 4,4,3,4,4,3,4,5,4
@@ -51,9 +51,9 @@ const mixed = Scoring.pointsForRound([3, 4, 2, 5, 3, 3, 4, 5, 1], 0, 'front', sc
 assertEq(mixed.total, 15.5, 'Mixed round points');
 
 // --- Test 5: handicap takes a bogey to a par ---
-// 6-HCP player who shoots 5 (bogey) on hole 5 (par 4) gets 1 stroke → net 4 → par → 1 pt.
+// 3-HCP (9-hole) player who shoots 5 (bogey) on hole 5 (par 4) gets 1 stroke → net 4 → par → 1 pt.
 // Same player shoots 5 on hole 1 (par 4), 0 strokes → net 5 → bogey → 0.5 pts.
-const hcpRound = Scoring.pointsForRound([5, 4, 3, 4, 5, 3, 4, 5, 4], 6, 'front', scorecard);
+const hcpRound = Scoring.pointsForRound([5, 4, 3, 4, 5, 3, 4, 5, 4], 3, 'front', scorecard);
 // Hole 1 (par 4, 0 strokes): gross 5 → net 5 → bogey → 0.5
 // Hole 2 (par 4, 1 stroke):  gross 4 → net 3 → birdie → 2
 // Hole 3 (par 3, 0):         gross 3 → par → 1
@@ -64,12 +64,12 @@ const hcpRound = Scoring.pointsForRound([5, 4, 3, 4, 5, 3, 4, 5, 4], 6, 'front',
 // Hole 8 (par 5, 0):         gross 5 → par → 1
 // Hole 9 (par 4, 0):         gross 4 → par → 1
 // Total: 0.5 + 2 + 1 + 2 + 1 + 1 + 1 + 1 + 1 = 10.5
-assertEq(hcpRound.total, 10.5, '6-HCP player mixed round with stroke allocation');
+assertEq(hcpRound.total, 10.5, '3-HCP (9h) player mixed round with stroke allocation');
 
 // --- Test 6: full match with team points ---
 // Match: Guidos (Spas + CK) vs Zach & Matt. Both teams play front 9.
-// Spas: HCP 6, shoots [5,4,3,4,5,3,4,5,4] → 10.5 (from above) + 1 showup = 11.5
-// CK: HCP 8, shoots [4,4,3,4,4,3,4,5,4] (par round). 9-hole HCP = 4. Strokes go to 5,2,4,7.
+// Spas: 9h HCP 3, shoots [5,4,3,4,5,3,4,5,4] → 10.5 (from above) + 1 showup = 11.5
+// CK: 9h HCP 4, shoots [4,4,3,4,4,3,4,5,4] (par round). Strokes go to 5,2,4,7.
 //   H1 (par 4, 0): 4 = par = 1
 //   H2 (par 4, 1): 4-1=3 = birdie = 2
 //   H3 (par 3, 0): 3 = par = 1
@@ -82,7 +82,7 @@ assertEq(hcpRound.total, 10.5, '6-HCP player mixed round with stroke allocation'
 // Total: 1+2+1+2+2+1+2+1+1 = 13 + 1 showup = 14
 // Guidos team total: 11.5 + 14 = 25.5
 //
-// Zach (HCP 12, half=6, strokes go to 5,2,4,7,6,1): shoots [5,5,4,5,5,4,5,6,5]
+// Zach: 9h HCP 6, strokes go to 5,2,4,7,6,1: shoots [5,5,4,5,5,4,5,6,5]
 //   H1 (par 4, 1): 5-1=4 = par = 1
 //   H2 (par 4, 1): 5-1=4 = par = 1
 //   H3 (par 3, 0): 4 = bogey = 0.5
@@ -94,7 +94,7 @@ assertEq(hcpRound.total, 10.5, '6-HCP player mixed round with stroke allocation'
 //   H9 (par 4, 0): 5 = bogey = 0.5
 // Total: 7.5 + 1 showup = 8.5
 //
-// Matt didn't show. Sub Tom plays in his place. HCP 10 (half=5, strokes to 5,2,4,7,6).
+// Matt didn't show. Sub Tom plays in his place. 9h HCP 5, strokes to 5,2,4,7,6.
 // Tom shoots [4,5,3,4,4,3,4,5,4]:
 //   H1 (par 4, 0): 4 = par = 1
 //   H2 (par 4, 1): 5-1=4 = par = 1
@@ -114,10 +114,10 @@ const match = {
   teamB: 'zach-matt',
   nine: 'front',
   participants: [
-    { teamId: 'golfin-guidos', playerId: 'spas',     isSub: false, handicap: 6,  holes: [5,4,3,4,5,3,4,5,4] },
-    { teamId: 'golfin-guidos', playerId: 'ckheinle', isSub: false, handicap: 8,  holes: [4,4,3,4,4,3,4,5,4] },
-    { teamId: 'zach-matt',     playerId: 'zach-john',isSub: false, handicap: 12, holes: [5,5,4,5,5,4,5,6,5] },
-    { teamId: 'zach-matt',     playerId: 'sub-tom',  isSub: true,  subName: 'Tom', handicap: 10, holes: [4,5,3,4,4,3,4,5,4] },
+    { teamId: 'golfin-guidos', playerId: 'spas',     isSub: false, handicap: 3, holes: [5,4,3,4,5,3,4,5,4] },
+    { teamId: 'golfin-guidos', playerId: 'ckheinle', isSub: false, handicap: 4, holes: [4,4,3,4,4,3,4,5,4] },
+    { teamId: 'zach-matt',     playerId: 'zach-john',isSub: false, handicap: 6, holes: [5,5,4,5,5,4,5,6,5] },
+    { teamId: 'zach-matt',     playerId: 'sub-tom',  isSub: true,  subName: 'Tom', handicap: 5, holes: [4,5,3,4,4,3,4,5,4] },
   ],
 };
 const result = Scoring.scoreMatch(match, scorecard);
@@ -137,8 +137,8 @@ const soloMatch = {
   teamB: 'zach-matt',
   nine: 'front',
   participants: [
-    { teamId: 'golfin-guidos', playerId: 'spas', isSub: false, handicap: 6, holes: [5,4,3,4,5,3,4,5,4] }, // 11.5
-    { teamId: 'zach-matt',     playerId: 'zach-john', isSub: false, handicap: 12, holes: [5,5,4,5,5,4,5,6,5] }, // 8.5
+    { teamId: 'golfin-guidos', playerId: 'spas', isSub: false, handicap: 3, holes: [5,4,3,4,5,3,4,5,4] }, // 11.5
+    { teamId: 'zach-matt',     playerId: 'zach-john', isSub: false, handicap: 6, holes: [5,5,4,5,5,4,5,6,5] }, // 8.5
   ],
 };
 const soloResult = Scoring.scoreMatch(soloMatch, scorecard);

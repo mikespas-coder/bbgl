@@ -1,5 +1,5 @@
 {
-  "_note": "Updated for the new format per Brian's email on 5/14/2026. All 2-man teams now. Handicaps placeholder 0 -- update after the 5/15/2026 handicap-setting round.",
+  "_note": "Updated for the new format per Brian's email on 5/14/2026. All 2-man teams now. Handicap field is the player's 9-HOLE handicap (BBGL plays 9 holes a week). Placeholder 0 until set after the 5/15/2026 handicap round.",
   "teams": [
     {
       "id": "golfin-guidos",

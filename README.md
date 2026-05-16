@@ -114,6 +114,8 @@ After Friday's round:
 ├── recaps.html           Weekly write-ups
 ├── score-entry.html      The one Brian uses each Friday -- hole-by-hole grid
 ├── README.md             You are here
+├── assets/img/
+│   └── bbgl-logo.svg     Header logo (drop a bbgl-logo.png here to override)
 ├── data/
 │   ├── league.json       Name, season, format description
 │   ├── teams.json        Roster

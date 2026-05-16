@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" fill="none" aria-label="BBGL logo">
+  <!-- Stylized BBGL placeholder: beer mug with foam spilling onto a golf club + ball.
+       Drop a real PNG/JPG into assets/img/bbgl-logo.png to replace; the header looks
+       for bbgl-logo.svg first, then bbgl-logo.png. -->
+  <g stroke="#001E5C" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <!-- Golf club shaft, head, and ball (drawn first so mug sits on top) -->
+    <path d="M50 165 L90 110" />
+    <path d="M44 170 Q40 178 48 178 L62 178 Q66 178 62 170 Z" fill="#FFFFFF" />
+    <circle cx="36" cy="172" r="6" fill="#FFFFFF" />
+    <circle cx="34" cy="170" r="0.8" fill="#001E5C" stroke="none" />
+    <circle cx="38" cy="171" r="0.8" fill="#001E5C" stroke="none" />
+    <circle cx="36" cy="174" r="0.8" fill="#001E5C" stroke="none" />
+
+    <!-- Tilted beer mug body -->
+    <path d="M85 60 L160 75 L150 155 L75 140 Z" fill="#DBB339" />
+    <!-- Mug handle (right side) -->
+    <path d="M160 85 Q180 95 178 120 Q176 138 155 145" />
+
+    <!-- Foam layer at the top of the mug -->
+    <path d="M75 70 Q90 50 110 55 Q130 50 145 60 Q155 55 165 70 L160 78 L85 65 Z" fill="#FFFFFF" />
+    <!-- Foam drips spilling down toward the club -->
+    <circle cx="78" cy="80" r="3" fill="#FFFFFF" />
+    <circle cx="70" cy="95" r="3" fill="#FFFFFF" />
+    <circle cx="62" cy="115" r="3" fill="#FFFFFF" />
+    <circle cx="56" cy="135" r="3" fill="#FFFFFF" />
+    <path d="M75 72 Q60 100 50 145" stroke-width="3" />
+
+    <!-- A few interior lines on the mug for that hand-drawn look -->
+    <path d="M100 90 L100 130" stroke-width="2" opacity="0.7" />
+    <path d="M115 92 L115 132" stroke-width="2" opacity="0.7" />
+    <path d="M130 94 L130 134" stroke-width="2" opacity="0.7" />
+  </g>
+</svg>

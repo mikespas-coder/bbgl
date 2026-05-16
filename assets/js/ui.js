@@ -38,13 +38,15 @@ const UI = {
     if (!header) return;
     header.innerHTML = `
       <div class="bg-bills-blue text-white">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-          <div>
-            <a href="index.html" class="block">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <a href="index.html" class="flex items-center gap-3">
+            <img id="bbgl-logo" src="assets/img/bbgl-logo.png"
+                 alt="" class="h-14 w-14 rounded-full bg-white p-1 shadow-md ring-2 ring-bills-red object-contain" />
+            <div>
               <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">${DataStore.league?.name || 'Audubon Friday Night League'}</h1>
               <p class="text-bills-blue-light text-sm">${DataStore.league?.course || ''} &middot; ${DataStore.league?.location || ''} &middot; ${DataStore.league?.season || ''} season</p>
-            </a>
-          </div>
+            </div>
+          </a>
         </div>
         <nav class="bg-bills-blue-dark">
           <div class="max-w-5xl mx-auto px-2 flex flex-wrap">
@@ -55,6 +57,20 @@ const UI = {
         </nav>
       </div>
     `;
+
+    // Fall back to .jpg, then .svg, then hide if no logo file exists.
+    const logo = document.getElementById('bbgl-logo');
+    if (logo) {
+      const fallbacks = ['assets/img/bbgl-logo.jpg', 'assets/img/bbgl-logo.jpeg', 'assets/img/bbgl-logo.svg'];
+      logo.addEventListener('error', function onErr() {
+        if (fallbacks.length) {
+          logo.src = fallbacks.shift();
+        } else {
+          logo.removeEventListener('error', onErr);
+          logo.style.display = 'none';
+        }
+      });
+    }
   },
 
   showError(msg) {

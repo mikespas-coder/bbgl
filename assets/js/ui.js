@@ -37,19 +37,19 @@ const UI = {
     const header = document.getElementById('app-header');
     if (!header) return;
     header.innerHTML = `
-      <div class="bg-emerald-800 text-white">
+      <div class="bg-bills-blue text-white">
         <div class="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
           <div>
             <a href="index.html" class="block">
               <h1 class="text-2xl sm:text-3xl font-bold tracking-tight">${DataStore.league?.name || 'Audubon Friday Night League'}</h1>
-              <p class="text-emerald-200 text-sm">${DataStore.league?.course || ''} &middot; ${DataStore.league?.location || ''} &middot; ${DataStore.league?.season || ''} season</p>
+              <p class="text-bills-blue-light text-sm">${DataStore.league?.course || ''} &middot; ${DataStore.league?.location || ''} &middot; ${DataStore.league?.season || ''} season</p>
             </a>
           </div>
         </div>
-        <nav class="bg-emerald-900">
+        <nav class="bg-bills-blue-dark">
           <div class="max-w-5xl mx-auto px-2 flex flex-wrap">
             ${links.map(([href, label]) => `
-              <a href="${href}" class="px-3 py-2 text-sm sm:text-base ${active === href ? 'bg-emerald-700 text-white' : 'text-emerald-100 hover:bg-emerald-800'}">${label}</a>
+              <a href="${href}" class="px-3 py-2 text-sm sm:text-base ${active === href ? 'bg-bills-red text-white' : 'text-bills-blue-light hover:bg-bills-blue'}">${label}</a>
             `).join('')}
           </div>
         </nav>

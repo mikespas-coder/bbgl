@@ -60,11 +60,12 @@
       ]
     },
     {
-      "id": "zach-matt",
-      "name": "Zach & Matt",
+      "id": "cole-matt",
+      "name": "Cole & Matt",
+      "tagline": "Cole replaced Zach as of 5/15",
       "players": [
-        { "id": "zach-john", "name": "Zach John", "nickname": "Zach", "handicap": 0 },
-        { "id": "matt",      "name": "Matt",      "nickname": "Matt", "handicap": 0 }
+        { "id": "cole", "name": "Cole", "nickname": "Cole", "handicap": 0 },
+        { "id": "matt", "name": "Matt", "nickname": "Matt", "handicap": 0 }
       ]
     }
   ]

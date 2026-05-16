@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Schedule | Bogey's and Beers Golf League</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'bills-blue':       '#00338D',
+          'bills-blue-dark':  '#001E5C',
+          'bills-blue-light': '#E6EBF4',
+          'bills-red':        '#C60C30',
+          'bills-red-dark':   '#8C0822',
+          'bills-red-light':  '#FBE7EA',
+        }
+      }
+    }
+  };
+</script>
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body class="bg-stone-50 text-stone-900">
@@ -32,14 +48,14 @@
               const played = DataStore.scoresByWeek[wk.week] != null;
               const upcoming = !played && wk.date >= today;
               return `
-                <div class="bg-white rounded-lg shadow-sm border ${upcoming ? 'border-emerald-300' : 'border-stone-200'} overflow-hidden">
-                  <div class="${played ? 'bg-stone-100' : upcoming ? 'bg-emerald-50' : 'bg-stone-50'} px-4 py-3 flex items-center justify-between">
+                <div class="bg-white rounded-lg shadow-sm border ${upcoming ? 'border-bills-blue' : 'border-stone-200'} overflow-hidden">
+                  <div class="${played ? 'bg-stone-100' : upcoming ? 'bg-bills-red-light' : 'bg-stone-50'} px-4 py-3 flex items-center justify-between">
                     <div>
                       <span class="font-bold text-stone-800">Week ${wk.week}</span>
                       <span class="text-stone-500 ml-3 text-sm">${UI.formatDate(wk.date)}</span>
                       <span class="text-stone-400 ml-2 text-xs uppercase tracking-wide">${wk.nine === 'back' ? 'Back 9' : 'Front 9'}</span>
                     </div>
-                    <span class="text-xs px-2 py-1 rounded ${played ? 'bg-stone-300 text-stone-700' : upcoming ? 'bg-emerald-600 text-white' : 'bg-stone-200 text-stone-600'}">
+                    <span class="text-xs px-2 py-1 rounded ${played ? 'bg-stone-300 text-stone-700' : upcoming ? 'bg-bills-red text-white' : 'bg-stone-200 text-stone-600'}">
                       ${played ? 'Final' : upcoming ? 'Upcoming' : 'Scheduled'}
                     </span>
                   </div>

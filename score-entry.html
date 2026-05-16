@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Score Entry | Bogey's and Beers Golf League</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'bills-blue':       '#00338D',
+          'bills-blue-dark':  '#001E5C',
+          'bills-blue-light': '#E6EBF4',
+          'bills-red':        '#C60C30',
+          'bills-red-dark':   '#8C0822',
+          'bills-red-light':  '#FBE7EA',
+        }
+      }
+    }
+  };
+</script>
   <link rel="stylesheet" href="assets/css/style.css" />
   <style>
     .hole-input { width: 3.25rem; }
@@ -27,7 +43,7 @@
           <input type="checkbox" id="pw-remember" checked />
           Remember me on this device
         </label>
-        <button type="submit" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded">
+        <button type="submit" class="w-full bg-bills-red hover:bg-bills-red-dark text-white font-semibold px-4 py-2 rounded">
           Unlock
         </button>
         <p id="pw-error" class="text-sm text-red-600 hidden">Wrong password.</p>
@@ -117,7 +133,7 @@
           <div id="matchesArea" class="space-y-4 mb-6"></div>
 
           <div class="flex flex-wrap gap-3 mb-6">
-            <button id="generateBtn" class="bg-emerald-700 hover:bg-emerald-800 text-white font-semibold px-4 py-2 rounded">Generate JSON &amp; Preview</button>
+            <button id="generateBtn" class="bg-bills-red hover:bg-bills-red-dark text-white font-semibold px-4 py-2 rounded">Generate JSON &amp; Preview</button>
             <button id="copyBtn" class="bg-stone-200 hover:bg-stone-300 text-stone-800 font-semibold px-4 py-2 rounded hidden">Copy JSON</button>
           </div>
 
@@ -233,14 +249,14 @@
                   <tbody>${aRows}</tbody>
                 </table>
                 <div class="my-2">
-                  <button type="button" data-add-sub="A" class="text-xs text-emerald-700 hover:underline">+ Add sub for ${tA.name}</button>
+                  <button type="button" data-add-sub="A" class="text-xs text-bills-red hover:underline">+ Add sub for ${tA.name}</button>
                 </div>
                 <table class="min-w-full text-sm" data-section="B">
                   <thead>${headerRow}</thead>
                   <tbody>${bRows}</tbody>
                 </table>
                 <div class="my-2">
-                  <button type="button" data-add-sub="B" class="text-xs text-emerald-700 hover:underline">+ Add sub for ${tB.name}</button>
+                  <button type="button" data-add-sub="B" class="text-xs text-bills-red hover:underline">+ Add sub for ${tB.name}</button>
                 </div>
               </div>
             `;
@@ -348,7 +364,7 @@
                 const tA = DataStore.teamById(p.teamA);
                 const tB = DataStore.teamById(p.teamB);
                 return `
-                  <div class="bg-emerald-50 border border-emerald-200 rounded p-3 text-sm">
+                  <div class="bg-bills-red-light border border-bills-red rounded p-3 text-sm">
                     <div class="flex justify-between"><span>${tA.name}</span><span><span class="text-stone-500 text-xs mr-1">${UI.formatPoints(p.teamATotal)} ind</span><span class="font-bold">${UI.formatPoints(p.teamAPoints)} pts</span></span></div>
                     <div class="flex justify-between"><span>${tB.name}</span><span><span class="text-stone-500 text-xs mr-1">${UI.formatPoints(p.teamBTotal)} ind</span><span class="font-bold">${UI.formatPoints(p.teamBPoints)} pts</span></span></div>
                   </div>

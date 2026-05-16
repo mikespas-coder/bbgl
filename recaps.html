@@ -5,6 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Recaps | Bogey's and Beers Golf League</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          'bills-blue':       '#00338D',
+          'bills-blue-dark':  '#001E5C',
+          'bills-blue-light': '#E6EBF4',
+          'bills-red':        '#C60C30',
+          'bills-red-dark':   '#8C0822',
+          'bills-red-light':  '#FBE7EA',
+        }
+      }
+    }
+  };
+</script>
   <link rel="stylesheet" href="assets/css/style.css" />
 </head>
 <body class="bg-stone-50 text-stone-900">
@@ -38,8 +54,8 @@
           <div class="space-y-8">
             ${recaps.map(r => `
               <article class="bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
-                <div class="bg-emerald-700 text-white px-5 py-3">
-                  <div class="text-xs uppercase tracking-wider text-emerald-200">Week ${r.week} &middot; ${UI.formatDate(r.date)}</div>
+                <div class="bg-bills-red text-white px-5 py-3">
+                  <div class="text-xs uppercase tracking-wider text-bills-blue-light">Week ${r.week} &middot; ${UI.formatDate(r.date)}</div>
                   <h3 class="text-xl font-bold">${r.title}</h3>
                 </div>
                 <div class="p-5">

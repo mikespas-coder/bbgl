@@ -260,10 +260,23 @@ const Scoring = {
       const par = wk.nine === 'back' ? scorecard.backPar : scorecard.frontPar;
 
       const pushIfFull = (p) => {
-        if (p.playerId !== playerId || !p.holes) return;
-        const validScores = p.holes.filter(h => h != null && h > 0);
-        if (validScores.length !== 9) return; // only count full rounds
-        const gross = validScores.reduce((s, h) => s + h, 0);
+        if (p.playerId !== playerId) return;
+        let gross;
+        // Prefer hole-by-hole if present, fall back to a direct `gross` field
+        // (used for the 5/15 handicap-setting round where we only have totals).
+        if (p.holes) {
+          const validScores = p.holes.filter(h => h != null && h > 0);
+          if (validScores.length !== 9) {
+            if (p.gross == null) return;
+            gross = p.gross;
+          } else {
+            gross = validScores.reduce((s, h) => s + h, 0);
+          }
+        } else if (p.gross != null) {
+          gross = p.gross;
+        } else {
+          return;
+        }
         rounds.push({ week: w, gross, par, diff: gross - par });
       };
 

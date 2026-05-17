@@ -68,8 +68,14 @@
       function reveal() {
         document.getElementById('pw-gate').classList.add('hidden');
         document.getElementById('protected').classList.remove('hidden');
-        // Now load the score-entry app.
-        runApp();
+        // runApp is defined in a script tag further down the page. If we got
+        // here before that script has parsed (e.g. auto-unlock via stored
+        // password), wait for window 'load' before invoking it.
+        if (typeof runApp === 'function') {
+          runApp();
+        } else {
+          window.addEventListener('load', () => runApp());
+        }
       }
 
       if (sessionStorage.getItem(KEY) === '1' || localStorage.getItem(KEY) === '1') {

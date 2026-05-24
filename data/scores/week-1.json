@@ -38,6 +38,14 @@
           "holes": [6, 6, 5, 6, 7, 4, 6, 8, 7]
         },
         {
+          "teamId": "cole-matt",
+          "playerId": "zack",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [11, 7, 7, 10, 6, 5, 8, 7, 7]
+        },
+        {
           "teamId": "birdie-hunters",
           "playerId": "drew",
           "isSub": false,

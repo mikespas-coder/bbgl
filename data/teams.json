@@ -62,12 +62,12 @@
     },
     {
       "id": "cole-matt",
-      "name": "Cole, Matt & Zach",
+      "name": "Cole, Matt & Zack",
       "tagline": "3-man roster; 2 play each week",
       "players": [
         { "id": "cole", "name": "Cole",      "nickname": "Cole", "handicap": 0 },
         { "id": "matt", "name": "Matt",      "nickname": "Matt", "handicap": 0 },
-        { "id": "zach", "name": "Zach John", "nickname": "Zach", "handicap": 0 }
+        { "id": "zack", "name": "Zack John", "nickname": "Zack", "handicap": 0 }
       ]
     }
   ]

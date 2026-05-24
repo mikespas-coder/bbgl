@@ -69,12 +69,12 @@ These need confirmation:
 
 1. **Golfin' Guidos** -- Michael Spasiano + Christopher Karl Heinle
 2. **Timmy & Paul B** -- Timmy + Paul B (new this year)
-3. **Big Fred & buddy** -- Fred K. Heinle + TBD
+3. **BT Boys** -- Fred K. Heinle + Pete
 4. **Kevin & Brian** -- Kevin + Brian Burkhardt
-5. **Vito & Hannigan** -- Vito Gigante + Mark Hannigan
-6. **Drew & Jamie** -- Drew Sive + Jamie
+5. **Vito, Hannigan & Chad** -- Vito Gigante + Mark Hannigan + Chad Stowe (3-man roster, 2 play each week)
+6. **Birdie Hunters** -- Drew Sive + Jamie
 7. **Joe Czelusta & Adam** -- Joe Czelusta + Adam Burkhardt
-8. **Zach & Matt** -- Zach John + Matt
+8. **Cole, Matt & Zack** -- Cole + Matt + Zack John (3-man roster, 2 play each week)
 
 ## Audubon scorecard (Men's tees)
 

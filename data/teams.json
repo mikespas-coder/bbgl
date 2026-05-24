@@ -61,11 +61,12 @@
     },
     {
       "id": "cole-matt",
-      "name": "Cole & Matt",
-      "tagline": "Cole replaced Zach as of 5/15",
+      "name": "Cole, Matt & Zach",
+      "tagline": "3-man roster; 2 play each week",
       "players": [
-        { "id": "cole", "name": "Cole", "nickname": "Cole", "handicap": 0 },
-        { "id": "matt", "name": "Matt", "nickname": "Matt", "handicap": 0 }
+        { "id": "cole", "name": "Cole",      "nickname": "Cole", "handicap": 0 },
+        { "id": "matt", "name": "Matt",      "nickname": "Matt", "handicap": 0 },
+        { "id": "zach", "name": "Zach John", "nickname": "Zach", "handicap": 0 }
       ]
     }
   ]

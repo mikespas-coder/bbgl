@@ -55,7 +55,7 @@
             ${recaps.map(r => `
               <article class="bg-white rounded-lg shadow-sm border border-stone-200 overflow-hidden">
                 <div class="bg-bills-red text-white px-5 py-3">
-                  <div class="text-xs uppercase tracking-wider text-bills-blue-light">Week ${r.week} &middot; ${UI.formatDate(r.date)}</div>
+                  <div class="text-xs uppercase tracking-wider text-bills-blue-light">${r.week === 0 ? 'Handicap Round' : 'Week ' + r.week} &middot; ${UI.formatDate(r.date)}</div>
                   <h3 class="text-xl font-bold">${r.title}</h3>
                 </div>
                 <div class="p-5">

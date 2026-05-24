@@ -21,10 +21,9 @@
     {
       "id": "bt-boys",
       "name": "BT Boys",
-      "tagline": "Fred's partner still TBD",
       "players": [
         { "id": "big-fred",   "name": "Fred K. Heinle", "nickname": "Big Fred", "handicap": 0 },
-        { "id": "fred-buddy", "name": "TBD",            "nickname": "TBD",      "handicap": 0 }
+        { "id": "fred-buddy", "name": "Pete",           "nickname": "Pete",     "handicap": 0 }
       ]
     },
     {

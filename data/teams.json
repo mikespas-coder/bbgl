@@ -37,10 +37,12 @@
     },
     {
       "id": "vito-hannigan",
-      "name": "Vito & Hannigan",
+      "name": "Vito, Hannigan & Chad",
+      "tagline": "3-man roster; 2 play each week",
       "players": [
         { "id": "vito",     "name": "Vito Gigante",  "nickname": "Vito",     "handicap": 0 },
-        { "id": "hannigan", "name": "Mark Hannigan", "nickname": "Hannigan", "handicap": 0 }
+        { "id": "hannigan", "name": "Mark Hannigan", "nickname": "Hannigan", "handicap": 0 },
+        { "id": "chad",     "name": "Chad Stowe",    "nickname": "Chad",     "handicap": 0 }
       ]
     },
     {

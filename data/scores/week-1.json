@@ -90,6 +90,14 @@
       "teamB": "kevin-brian",
       "participants": [
         {
+          "teamId": "vito-hannigan",
+          "playerId": "chad",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [6, 7, 4, 10, 10, 5, 6, 6, 7]
+        },
+        {
           "teamId": "kevin-brian",
           "playerId": "kevin",
           "isSub": false,

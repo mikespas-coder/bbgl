@@ -28,7 +28,7 @@
     },
     {
       "id": "kevin-brian",
-      "name": "Kevin & Brian",
+      "name": "2 Birdies, 1 Putt",
       "players": [
         { "id": "kevin",  "name": "Kevin",           "nickname": "Kevin", "handicap": 0 },
         { "id": "bburkk", "name": "Brian Burkhardt", "nickname": "Brian", "handicap": 0 }

@@ -48,7 +48,7 @@
       "id": "birdie-hunters",
       "name": "Birdie Hunters",
       "players": [
-        { "id": "drew",  "name": "Drew Sive", "nickname": "Drew",  "handicap": 0 },
+        { "id": "drew",  "name": "Drew Wagner", "nickname": "Drew",  "handicap": 0 },
         { "id": "jamie", "name": "Jamie",     "nickname": "Jamie", "handicap": 0 }
       ]
     },

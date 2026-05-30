@@ -2,7 +2,8 @@
   "_note": "Add a week number to weeksWithScores after committing data/scores/week-N.json. Same for recaps. The site only loads weeks listed here.",
   "weeksWithScores": [
     0,
-    1
+    1,
+    2
   ],
   "weeksWithRecaps": [
     0,

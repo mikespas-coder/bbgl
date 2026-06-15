@@ -1,0 +1,151 @@
+{
+  "week": 4,
+  "date": "2026-06-12",
+  "nine": "back",
+  "matches": [
+    {
+      "teamA": "golfin-guidos",
+      "teamB": "kevin-brian",
+      "participants": [
+        {
+          "teamId": "golfin-guidos",
+          "playerId": "spas",
+          "isSub": false,
+          "subName": null,
+          "handicap": 14,
+          "holes": [4, 5, 7, 6, 5, 5, 5, 6, 6]
+        },
+        {
+          "teamId": "golfin-guidos",
+          "playerId": "ckheinle",
+          "isSub": false,
+          "subName": null,
+          "handicap": 12,
+          "holes": [5, 8, 7, 5, 6, 4, 5, 4, 6]
+        },
+        {
+          "teamId": "kevin-brian",
+          "playerId": "kevin",
+          "isSub": false,
+          "subName": null,
+          "handicap": 12,
+          "holes": [5, 6, 6, 6, 7, 3, 8, 6, 6]
+        },
+        {
+          "teamId": "kevin-brian",
+          "playerId": "bburkk",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [6, 4, 6, 6, 8, 4, 5, 4, 6]
+        }
+      ]
+    },
+    {
+      "teamA": "bt-boys",
+      "teamB": "vito-hannigan",
+      "participants": [
+        {
+          "teamId": "bt-boys",
+          "playerId": "big-fred",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [6, 7, 7, 5, 5, 5, 6, 9, 5]
+        },
+        {
+          "teamId": "bt-boys",
+          "playerId": "sub-jack",
+          "isSub": true,
+          "subName": "Jack",
+          "handicap": 18,
+          "holes": [9, 7, 8, 5, 6, 5, 5, 9, 7]
+        },
+        {
+          "teamId": "vito-hannigan",
+          "playerId": "vito",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [9, 7, 7, 6, 8, 6, 6, 7, 4]
+        },
+        {
+          "teamId": "vito-hannigan",
+          "playerId": "hannigan",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [7, 5, 6, 6, 7, 5, 6, 4, 4]
+        }
+      ]
+    },
+    {
+      "teamA": "birdie-hunters",
+      "teamB": "joe-adam",
+      "participants": [
+        {
+          "teamId": "birdie-hunters",
+          "playerId": "drew",
+          "isSub": false,
+          "subName": null,
+          "handicap": 7,
+          "holes": [5, 5, 5, 4, 5, 4, 5, 5, 5]
+        },
+        {
+          "teamId": "birdie-hunters",
+          "playerId": "sub-aj",
+          "isSub": true,
+          "subName": "AJ",
+          "handicap": 18,
+          "holes": [5, 5, 6, 9, 5, 5, 6, 7, 6]
+        },
+        {
+          "teamId": "joe-adam",
+          "playerId": "chad",
+          "isSub": true,
+          "subName": null,
+          "handicap": 18,
+          "holes": [8, 5, 9, 8, 8, 5, 9, 7, 6]
+        }
+      ]
+    },
+    {
+      "teamA": "timmy-paul",
+      "teamB": "cole-matt",
+      "participants": [
+        {
+          "teamId": "timmy-paul",
+          "playerId": "timmy",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [5, 5, 6, 5, 5, 3, 6, 6, 7]
+        },
+        {
+          "teamId": "timmy-paul",
+          "playerId": "paul-b",
+          "isSub": false,
+          "subName": null,
+          "handicap": 15,
+          "holes": [6, 5, 6, 6, 7, 4, 8, 5, 6]
+        },
+        {
+          "teamId": "cole-matt",
+          "playerId": "matt",
+          "isSub": false,
+          "subName": null,
+          "handicap": 16,
+          "holes": [6, 4, 7, 6, 5, 4, 5, 5, 5]
+        },
+        {
+          "teamId": "cole-matt",
+          "playerId": "sub-rich",
+          "isSub": true,
+          "subName": "Rich",
+          "handicap": 12,
+          "holes": [5, 6, 6, 5, 5, 4, 5, 7, 5]
+        }
+      ]
+    }
+  ]
+}

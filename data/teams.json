@@ -22,8 +22,8 @@
       "id": "bt-boys",
       "name": "BT Boys",
       "players": [
-        { "id": "big-fred",   "name": "Fred K. Heinle", "nickname": "Big Fred", "handicap": 0 },
-        { "id": "fred-buddy", "name": "Pete",           "nickname": "Pete",     "handicap": 0 }
+        { "id": "big-fred", "name": "Fred K. Heinle", "nickname": "Big Fred", "handicap": 0 },
+        { "id": "sub-jack", "name": "Jack",           "nickname": "Jack",     "handicap": 0 }
       ]
     },
     {

@@ -86,8 +86,8 @@
         {
           "teamId": "bt-boys",
           "playerId": "fred-buddy",
-          "isSub": false,
-          "subName": null,
+          "isSub": true,
+          "subName": "Pete",
           "handicap": 18,
           "holes": [8, 8, 6, 8, 8, 7, 6, 8, 7]
         }

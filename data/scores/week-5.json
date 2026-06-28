@@ -2,10 +2,37 @@
   "week": 5,
   "date": "2026-06-19",
   "nine": "front",
-  "_pendingMatches": [
-    { "teamA": "golfin-guidos", "teamB": "vito-hannigan", "note": "awaiting scorecard" }
-  ],
   "matches": [
+    {
+      "teamA": "golfin-guidos",
+      "teamB": "vito-hannigan",
+      "participants": [
+        {
+          "teamId": "golfin-guidos",
+          "playerId": "spas",
+          "isSub": false,
+          "subName": null,
+          "handicap": 14,
+          "holes": [5, 4, 3, 7, 5, 4, 7, 5, 5]
+        },
+        {
+          "teamId": "vito-hannigan",
+          "playerId": "vito",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [7, 8, 4, 6, 7, 5, 6, 7, 6]
+        },
+        {
+          "teamId": "vito-hannigan",
+          "playerId": "hannigan",
+          "isSub": false,
+          "subName": null,
+          "handicap": 17,
+          "holes": [8, 6, 5, 6, 6, 4, 5, 5, 5]
+        }
+      ]
+    },
     {
       "teamA": "kevin-brian",
       "teamB": "joe-adam",

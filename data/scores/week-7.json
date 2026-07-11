@@ -1,0 +1,87 @@
+{
+  "week": 7,
+  "date": "2026-07-10",
+  "nine": "back",
+  "matches": [
+    {
+      "teamA": "golfin-guidos",
+      "teamB": "cole-matt",
+      "participants": [
+        {
+          "teamId": "golfin-guidos",
+          "playerId": "spas",
+          "isSub": false,
+          "subName": null,
+          "handicap": 13,
+          "holes": [6, 5, 6, 5, 4, 4, 6, 6, 5]
+        }
+      ]
+    },
+    {
+      "teamA": "joe-adam",
+      "teamB": "timmy-paul",
+      "participants": [
+        {
+          "teamId": "timmy-paul",
+          "playerId": "timmy",
+          "isSub": false,
+          "subName": null,
+          "handicap": 17,
+          "holes": [7, 6, 8, 5, 7, 5, 5, 5, 6]
+        },
+        {
+          "teamId": "timmy-paul",
+          "playerId": "paul-b",
+          "isSub": false,
+          "subName": null,
+          "handicap": 14,
+          "holes": [6, 6, 6, 4, 6, 3, 5, 6, 5]
+        }
+      ]
+    },
+    {
+      "teamA": "vito-hannigan",
+      "teamB": "birdie-hunters",
+      "participants": [
+        {
+          "teamId": "vito-hannigan",
+          "playerId": "hannigan",
+          "isSub": false,
+          "subName": null,
+          "handicap": 16,
+          "holes": [5, 6, 7, 6, 7, 4, 4, 5, 5]
+        },
+        {
+          "teamId": "vito-hannigan",
+          "playerId": "chad",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [8, 6, 6, 5, 6, 5, 6, 6, 7]
+        }
+      ]
+    },
+    {
+      "teamA": "kevin-brian",
+      "teamB": "bt-boys",
+      "participants": [
+        {
+          "teamId": "bt-boys",
+          "playerId": "big-fred",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [7, 6, 7, 6, 6, 5, 5, 6, 5]
+        },
+        {
+          "teamId": "bt-boys",
+          "playerId": "sub-jack",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [8, 8, 7, 6, 7, 6, 6, 7, 7]
+        }
+      ]
+    }
+  ]
+}

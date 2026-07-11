@@ -196,11 +196,11 @@
           `;
         }
 
-        function renderMatches() {
+        function renderMatches(syncNine = false) {
           const w = Number(weekPicker.value);
           const wk = DataStore.schedule.find(s => s.week === w);
           if (!wk) { matchesArea.innerHTML = ''; return; }
-          ninePicker.value = wk.nine || 'front';
+          if (syncNine) ninePicker.value = wk.nine || 'front';
           const existing = DataStore.scoresByWeek[w];
           const nine = ninePicker.value;
           const holes = holeHeadersFor(nine);
@@ -315,9 +315,9 @@
           });
         }
 
-        weekPicker.addEventListener('change', renderMatches);
-        ninePicker.addEventListener('change', renderMatches);
-        renderMatches();
+        weekPicker.addEventListener('change', () => renderMatches(true));
+        ninePicker.addEventListener('change', () => renderMatches(false));
+        renderMatches(true);
 
         function buildJson() {
           const w = Number(weekPicker.value);

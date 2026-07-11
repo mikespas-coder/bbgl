@@ -142,7 +142,7 @@
     {
       "week": 7,
       "date": "2026-07-10",
-      "nine": "front",
+      "nine": "back",
       "matches": [
         {
           "teamA": "golfin-guidos",
@@ -165,7 +165,7 @@
     {
       "week": 8,
       "date": "2026-07-17",
-      "nine": "back",
+      "nine": "front",
       "matches": [
         {
           "teamA": "timmy-paul",
@@ -188,7 +188,7 @@
     {
       "week": 9,
       "date": "2026-07-24",
-      "nine": "front",
+      "nine": "back",
       "matches": [
         {
           "teamA": "birdie-hunters",
@@ -211,7 +211,7 @@
     {
       "week": 10,
       "date": "2026-07-31",
-      "nine": "back",
+      "nine": "front",
       "matches": [
         {
           "teamA": "bt-boys",
@@ -234,7 +234,7 @@
     {
       "week": 11,
       "date": "2026-08-07",
-      "nine": "front",
+      "nine": "back",
       "matches": [
         {
           "teamA": "kevin-brian",
@@ -257,7 +257,7 @@
     {
       "week": 12,
       "date": "2026-08-14",
-      "nine": "back",
+      "nine": "front",
       "matches": [
         {
           "teamA": "vito-hannigan",
@@ -280,7 +280,7 @@
     {
       "week": 13,
       "date": "2026-08-21",
-      "nine": "front",
+      "nine": "back",
       "matches": [
         {
           "teamA": "joe-adam",
@@ -303,7 +303,7 @@
     {
       "week": 14,
       "date": "2026-08-28",
-      "nine": "back",
+      "nine": "front",
       "matches": [
         {
           "teamA": "cole-matt",

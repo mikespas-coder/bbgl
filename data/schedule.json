@@ -1,5 +1,5 @@
 {
-  "_note": "Updated 5/14/2026 for new format. 14 weeks, Fridays starting 5/22 (after the 5/15 handicap-setting round), skipping 7/3 for Independence Day weekend. 'nine' alternates front/back each week.",
+  "_note": "Updated 7/24/2026: regular season is weeks 1-11 (ends 8/7). Weeks 12-14 are playoffs (8/14, 8/21, 8/28). Playoff matchups TBD by standings. 9/4 off, championship party 9/11.",
   "schedule": [
     {
       "week": 1,
@@ -257,71 +257,38 @@
     {
       "week": 12,
       "date": "2026-08-14",
-      "nine": "front",
-      "matches": [
-        {
-          "teamA": "vito-hannigan",
-          "teamB": "golfin-guidos"
-        },
-        {
-          "teamA": "joe-adam",
-          "teamB": "kevin-brian"
-        },
-        {
-          "teamA": "cole-matt",
-          "teamB": "bt-boys"
-        },
-        {
-          "teamA": "timmy-paul",
-          "teamB": "birdie-hunters"
-        }
-      ]
+      "nine": "back",
+      "type": "playoff",
+      "playoffRound": "Playoffs — Round 1",
+      "matches": []
     },
     {
       "week": 13,
       "date": "2026-08-21",
-      "nine": "back",
-      "matches": [
-        {
-          "teamA": "joe-adam",
-          "teamB": "golfin-guidos"
-        },
-        {
-          "teamA": "cole-matt",
-          "teamB": "vito-hannigan"
-        },
-        {
-          "teamA": "timmy-paul",
-          "teamB": "kevin-brian"
-        },
-        {
-          "teamA": "birdie-hunters",
-          "teamB": "bt-boys"
-        }
-      ]
+      "nine": "front",
+      "type": "playoff",
+      "playoffRound": "Playoffs — Semifinals",
+      "matches": []
     },
     {
       "week": 14,
       "date": "2026-08-28",
-      "nine": "front",
-      "matches": [
-        {
-          "teamA": "cole-matt",
-          "teamB": "golfin-guidos"
-        },
-        {
-          "teamA": "timmy-paul",
-          "teamB": "joe-adam"
-        },
-        {
-          "teamA": "birdie-hunters",
-          "teamB": "vito-hannigan"
-        },
-        {
-          "teamA": "bt-boys",
-          "teamB": "kevin-brian"
-        }
-      ]
+      "nine": "back",
+      "type": "playoff",
+      "playoffRound": "Championship",
+      "matches": []
+    },
+    {
+      "week": null,
+      "date": "2026-09-04",
+      "type": "bye",
+      "label": "No Golf — Labor Day Weekend"
+    },
+    {
+      "week": null,
+      "date": "2026-09-11",
+      "type": "party",
+      "label": "Championship Party 🏆"
     }
   ]
 }

@@ -41,35 +41,68 @@
         const main = document.getElementById('app-main');
         const today = new Date().toISOString().slice(0,10);
 
+        let playoffDividerShown = false;
         main.innerHTML = `
           <h2 class="text-2xl font-bold text-stone-800 mb-6">Schedule</h2>
           <div class="space-y-4">
             ${DataStore.schedule.map(wk => {
+              // Bye week
+              if (wk.type === 'bye') {
+                return `
+                  <div class="bg-stone-100 rounded-lg border border-stone-200 px-4 py-3 text-center text-stone-500 text-sm font-medium">
+                    ${UI.formatDate(wk.date)} — ${wk.label}
+                  </div>
+                `;
+              }
+              // Party
+              if (wk.type === 'party') {
+                return `
+                  <div class="bg-bills-blue rounded-lg border border-bills-blue-dark px-4 py-4 text-center text-white font-bold text-lg">
+                    ${wk.label}<br>
+                    <span class="text-sm font-normal opacity-80">${UI.formatDate(wk.date)}</span>
+                  </div>
+                `;
+              }
+              // Playoff divider before first playoff week
+              let divider = '';
+              if (wk.type === 'playoff' && !playoffDividerShown) {
+                playoffDividerShown = true;
+                divider = `<div class="flex items-center gap-3 pt-2">
+                  <div class="flex-1 h-px bg-bills-red"></div>
+                  <span class="text-bills-red font-bold text-sm uppercase tracking-widest">Playoffs</span>
+                  <div class="flex-1 h-px bg-bills-red"></div>
+                </div>`;
+              }
+              const isPlayoff = wk.type === 'playoff';
               const played = DataStore.scoresByWeek[wk.week] != null;
               const upcoming = !played && wk.date >= today;
+              const headerBg = played ? 'bg-stone-100' : isPlayoff ? 'bg-bills-blue-light' : upcoming ? 'bg-bills-red-light' : 'bg-stone-50';
+              const borderColor = isPlayoff ? 'border-bills-blue' : upcoming ? 'border-bills-blue' : 'border-stone-200';
+              const badgeCls = played ? 'bg-stone-300 text-stone-700' : isPlayoff && upcoming ? 'bg-bills-blue text-white' : upcoming ? 'bg-bills-red text-white' : 'bg-stone-200 text-stone-600';
+              const badgeText = played ? 'Final' : upcoming ? 'Upcoming' : 'Scheduled';
+              const matchesHtml = isPlayoff && wk.matches.length === 0
+                ? `<li class="px-4 py-3 text-sm text-stone-400 italic">Matchups TBD — based on final standings</li>`
+                : wk.matches.map(m => {
+                    const tA = DataStore.teamById(m.teamA);
+                    const tB = DataStore.teamById(m.teamB);
+                    return `<li class="px-4 py-2 flex justify-between text-sm">
+                      <span>${tA.name} <span class="text-stone-400">vs</span> ${tB.name}</span>
+                    </li>`;
+                  }).join('');
               return `
-                <div class="bg-white rounded-lg shadow-sm border ${upcoming ? 'border-bills-blue' : 'border-stone-200'} overflow-hidden">
-                  <div class="${played ? 'bg-stone-100' : upcoming ? 'bg-bills-red-light' : 'bg-stone-50'} px-4 py-3 flex items-center justify-between">
+                ${divider}
+                <div class="bg-white rounded-lg shadow-sm border ${borderColor} overflow-hidden">
+                  <div class="${headerBg} px-4 py-3 flex items-center justify-between">
                     <div>
-                      <span class="font-bold text-stone-800">Week ${wk.week}</span>
+                      ${isPlayoff
+                        ? `<span class="font-bold text-bills-blue">${wk.playoffRound}</span>`
+                        : `<span class="font-bold text-stone-800">Week ${wk.week}</span>`}
                       <span class="text-stone-500 ml-3 text-sm">${UI.formatDate(wk.date)}</span>
                       <span class="text-stone-400 ml-2 text-xs uppercase tracking-wide">${wk.nine === 'back' ? 'Back 9' : 'Front 9'}</span>
                     </div>
-                    <span class="text-xs px-2 py-1 rounded ${played ? 'bg-stone-300 text-stone-700' : upcoming ? 'bg-bills-red text-white' : 'bg-stone-200 text-stone-600'}">
-                      ${played ? 'Final' : upcoming ? 'Upcoming' : 'Scheduled'}
-                    </span>
+                    <span class="text-xs px-2 py-1 rounded ${badgeCls}">${badgeText}</span>
                   </div>
-                  <ul class="divide-y divide-stone-100">
-                    ${wk.matches.map(m => {
-                      const tA = DataStore.teamById(m.teamA);
-                      const tB = DataStore.teamById(m.teamB);
-                      return `
-                        <li class="px-4 py-2 flex justify-between text-sm">
-                          <span>${tA.name} <span class="text-stone-400">vs</span> ${tB.name}</span>
-                        </li>
-                      `;
-                    }).join('')}
-                  </ul>
+                  <ul class="divide-y divide-stone-100">${matchesHtml}</ul>
                 </div>
               `;
             }).join('')}

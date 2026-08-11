@@ -85,8 +85,10 @@
                 : wk.matches.map(m => {
                     const tA = DataStore.teamById(m.teamA);
                     const tB = DataStore.teamById(m.teamB);
+                    const seedA = m.seed1 ? `<span class="text-stone-400 mr-1">#${m.seed1}</span>` : '';
+                    const seedB = m.seed2 ? `<span class="text-stone-400 mr-1">#${m.seed2}</span>` : '';
                     return `<li class="px-4 py-2 flex justify-between text-sm">
-                      <span>${tA.name} <span class="text-stone-400">vs</span> ${tB.name}</span>
+                      <span>${seedA}${tA.name} <span class="text-stone-400">vs</span> ${seedB}${tB.name}</span>
                     </li>`;
                   }).join('');
               return `

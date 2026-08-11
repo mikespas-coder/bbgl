@@ -260,7 +260,12 @@
       "nine": "back",
       "type": "playoff",
       "playoffRound": "Playoffs — Round 1",
-      "matches": []
+      "matches": [
+        { "seed1": 1, "seed2": 8, "teamA": "timmy-paul", "teamB": "joe-adam" },
+        { "seed1": 2, "seed2": 7, "teamA": "vito-hannigan", "teamB": "birdie-hunters" },
+        { "seed1": 3, "seed2": 6, "teamA": "golfin-guidos", "teamB": "bt-boys" },
+        { "seed1": 4, "seed2": 5, "teamA": "cole-matt", "teamB": "kevin-brian" }
+      ]
     },
     {
       "week": 13,

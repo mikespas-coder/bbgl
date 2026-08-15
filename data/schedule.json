@@ -273,7 +273,10 @@
       "nine": "front",
       "type": "playoff",
       "playoffRound": "Playoffs — Semifinals",
-      "matches": []
+      "matches": [
+        { "teamA": "joe-adam", "teamB": "kevin-brian" },
+        { "teamA": "vito-hannigan", "teamB": "golfin-guidos" }
+      ]
     },
     {
       "week": 14,

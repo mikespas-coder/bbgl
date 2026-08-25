@@ -1,0 +1,83 @@
+{
+  "week": 13,
+  "date": "2026-08-21",
+  "nine": "back",
+  "matches": [
+    {
+      "teamA": "joe-adam",
+      "teamB": "kevin-brian",
+      "participants": [
+        {
+          "teamId": "joe-adam",
+          "playerId": "datti",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [6, 5, 6, 8, 7, 6, 4, 6, 5]
+        },
+        {
+          "teamId": "joe-adam",
+          "playerId": "sub-stowe",
+          "isSub": true,
+          "subName": "Stowe",
+          "handicap": 18,
+          "holes": [6, 8, 5, 7, 8, 3, 5, 7, 6]
+        },
+        {
+          "teamId": "kevin-brian",
+          "playerId": "bburkk",
+          "isSub": false,
+          "subName": null,
+          "handicap": 16,
+          "holes": [5, 5, 6, 7, 9, 6, 4, 5, 4]
+        },
+        {
+          "teamId": "kevin-brian",
+          "playerId": "sub-rich",
+          "isSub": true,
+          "subName": "Rich",
+          "handicap": 12,
+          "holes": [6, 5, 7, 6, 6, 4, 5, 5, 5]
+        }
+      ]
+    },
+    {
+      "teamA": "vito-hannigan",
+      "teamB": "golfin-guidos",
+      "participants": [
+        {
+          "teamId": "vito-hannigan",
+          "playerId": "vito",
+          "isSub": false,
+          "subName": null,
+          "handicap": 18,
+          "holes": [7, 4, 6, 8, 7, 2, 5, 7, 7]
+        },
+        {
+          "teamId": "vito-hannigan",
+          "playerId": "hannigan",
+          "isSub": false,
+          "subName": null,
+          "handicap": 14,
+          "holes": [5, 3, 8, 5, 7, 5, 4, 6, 5]
+        },
+        {
+          "teamId": "golfin-guidos",
+          "playerId": "spas",
+          "isSub": false,
+          "subName": null,
+          "handicap": 12,
+          "holes": [6, 4, 8, 8, 7, 4, 6, 4, 5]
+        },
+        {
+          "teamId": "golfin-guidos",
+          "playerId": "ckheinle",
+          "isSub": false,
+          "subName": null,
+          "handicap": 13,
+          "holes": [5, 6, 6, 6, 7, 4, 5, 4, 5]
+        }
+      ]
+    }
+  ]
+}

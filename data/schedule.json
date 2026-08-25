@@ -284,7 +284,9 @@
       "nine": "back",
       "type": "playoff",
       "playoffRound": "Championship",
-      "matches": []
+      "matches": [
+        { "teamA": "joe-adam", "teamB": "vito-hannigan" }
+      ]
     },
     {
       "week": null,
